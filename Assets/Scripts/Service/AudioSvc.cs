@@ -42,8 +42,8 @@ public class AudioSvc : MonoBehaviour
     /// 播放UI音效
     /// </summary>
     /// <param name="name"></param>
-    public void PlauUIAudio(string name) {
-        AudioClip audio = ResSvc.Instance.LoadAudio("ResAudio/"+name,true);
+    public void PlayUIAudio(string name) {
+        AudioClip audio = ResSvc.Instance.LoadAudio("ResAudio/" + name,true);
         uiAudio.clip = audio;
         uiAudio.Play();
     }

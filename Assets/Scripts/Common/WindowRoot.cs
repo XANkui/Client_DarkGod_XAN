@@ -89,6 +89,11 @@ public class WindowRoot : MonoBehaviour
         trans.GetComponent<Text>().text = num.ToString();
     }
 
+    protected void SetSprite(Image img, string path) {
+        Sprite sp = resSvc.LoadSprite(path,true);
+        img.sprite = sp;
+    }
+
     protected T GetOrAddComponent<T>(GameObject go) where T : Component {
         T t = go.GetComponent<T>();
         if (t ==null)
@@ -103,6 +108,13 @@ public class WindowRoot : MonoBehaviour
 
     #region Click Evts
 
+
+    protected void OnClick(GameObject go, Action<object> cb, object args)
+    {
+        PEListener listener = GetOrAddComponent<PEListener>(go);
+        listener.onClick = cb;
+        listener.args = args;
+    }
     protected void OnClickDown(GameObject go,Action<PointerEventData> cb) {
         PEListener listener = GetOrAddComponent<PEListener>(go);
         listener.onclickDown = cb;

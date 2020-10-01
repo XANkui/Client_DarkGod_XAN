@@ -2754,6 +2754,9 @@ MonoBehaviour:
   txtName: {fileID: 7020680233395774570}
   txtExpPrg: {fileID: 185646475117960159}
   expPrgTrans: {fileID: 2940625489081914770}
+  btnHead: {fileID: 9144041016241434805}
+  btnGuide: {fileID: 9144041015706272587}
+  btnStrong: {fileID: 9144041016052585726}
 --- !u!1 &9144041015339064044
 GameObject:
   m_ObjectHideFlags: 0

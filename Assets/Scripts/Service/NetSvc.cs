@@ -103,6 +103,10 @@ public class NetSvc : MonoBehaviour
                 case ErrorCode.WrongPassword:
                     GameRoot.AddTips("密码错误");
                     break;
+                case ErrorCode.ServerDataError:
+                    Common.Log("服务器数据与客户端数据不一致，客户端可能外挂", LogType.Error);
+                    GameRoot.AddTips("客户端数据异常");
+                    break;
                 default:
                     break;
             }
@@ -120,6 +124,10 @@ public class NetSvc : MonoBehaviour
 
             case CMD.RspRename:
                 LoginSys.Instance.RspRename(msg);
+                break;
+
+            case CMD.RspGuide:
+                MainCitySys.Instance.RspGuide(msg);
                 break;
             default:
                 break;

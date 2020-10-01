@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Common\BaseData.cs" />
     <Compile Include="Assets\Scripts\Common\Constants.cs" />
     <Compile Include="Assets\Scripts\Common\LoopDragonFly.cs" />
+    <Compile Include="Assets\Scripts\Common\MainCityMap.cs" />
     <Compile Include="Assets\Scripts\Common\PEListener.cs" />
     <Compile Include="Assets\Scripts\Common\PETools.cs" />
     <Compile Include="Assets\Scripts\Common\PathDefine.cs" />
@@ -80,14 +81,19 @@
     <Compile Include="Assets\Scripts\System\MainCitySys.cs" />
     <Compile Include="Assets\Scripts\UIWindows\CreateWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindows\DynamicWnd.cs" />
+    <Compile Include="Assets\Scripts\UIWindows\GuideWnd.cs" />
+    <Compile Include="Assets\Scripts\UIWindows\InfoWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindows\LoadingWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindows\LoginWnd.cs" />
     <Compile Include="Assets\Scripts\UIWindows\MainCityWnd.cs" />
+    <Compile Include="Assets\Scripts\UIWindows\StrongWnd.cs" />
+    <None Include="Assets\Resources\ResCfgs\strong.xml" />
     <None Include="Assets\Compond\MakeChar\Shader\PlayerShader.shader" />
     <None Include="Assets\Resources\ResCfgs\rdname.xml" />
     <None Include="Assets\Resources\ResCfgs\map.xml" />
     <None Include="Assets\Compond\MakeChar\Shader\MogoFakeLight.shader" />
     <None Include="Assets\Compond\MakeScene\SceneShader\MogoTransparentDiffuse.shader" />
+    <None Include="Assets\Resources\ResCfgs\guide.xml" />
     <None Include="Assets\Compond\Shader\MogoSkybox.shader" />
     <None Include="Assets\Compond\Shader\Mul-skybox.shader" />
     <None Include="Assets\Compond\Shader\MonsterShader.shader" />

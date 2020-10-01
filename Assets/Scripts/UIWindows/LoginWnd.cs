@@ -46,7 +46,7 @@ public class LoginWnd : WindowRoot
     /// 更新/存储本地账号密码
     /// </summary>
     public void ClickEnterBtn() {
-        audioSvc.PlauUIAudio(Constants.UILoginBtn);
+        audioSvc.PlayUIAudio(Constants.UILoginBtn);
 
         string acct = iptAcct.text;
         string pass = iptPswd.text;
@@ -75,7 +75,7 @@ public class LoginWnd : WindowRoot
     /// 公告按钮
     /// </summary>
     public void ClickNoticeBtn() {
-        audioSvc.PlauUIAudio(Constants.UIClickBtn);
+        audioSvc.PlayUIAudio(Constants.UIClickBtn);
 
         GameRoot.AddTips("正在研发中...");
     }

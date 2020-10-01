@@ -99,4 +99,12 @@ public class GameRoot : MonoBehaviour
     public void SetPlayerName(string name) {
         PlayerData.name = name;
     }
+
+    public void SetPlayerDataByGuide(RspGuide data) {
+        PlayerData.coin = data.coin;
+        PlayerData.lv = data.lv;
+        PlayerData.exp = data.exp;
+        PlayerData.guideid = data.guideid;
+        
+    }
 }

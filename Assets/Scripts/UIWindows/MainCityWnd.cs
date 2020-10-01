@@ -30,12 +30,18 @@ public class MainCityWnd : WindowRoot
     public Text txtExpPrg;
     public Transform expPrgTrans;
 
+    public Button btnHead;
+    public Button btnGuide;
+    public Button btnStrong;
+
     #endregion
 
     private bool menuState = true;
     private float pointDis;
     private Vector2 dirPointStartPos = Vector2.zero;
     private Vector2 dirBgDefaultPos = Vector2.zero;
+
+    private AutoGuideCfg curTaskData = null;
 
     #region MainFUnctions
     protected override void InitWnd()
@@ -45,7 +51,11 @@ public class MainCityWnd : WindowRoot
         pointDis = Screen.height * 1.0f / Constants.ScreenStandardHeight * Constants.ScreenOPDis;
         dirBgDefaultPos = imgDirBg.transform.position;
 
+        btnHead.onClick.AddListener(ClickHeadBtn);
+
         btnMenu.onClick.AddListener(ClickMenuBtn);
+        btnGuide.onClick.AddListener(ClickGuideBtn);
+        btnStrong.onClick.AddListener(ClickStrongBtn);
         SetActive(imgDirPoint, false);
         
         RefreshUI();
@@ -53,7 +63,7 @@ public class MainCityWnd : WindowRoot
         RegisterTouchEvt();
     }
 
-    private void RefreshUI() {
+    public void RefreshUI() {
         PlayerData pd = GameRoot.Instance.PlayerData;
 
         SetText(txtFight,Common.GetFightByProps(pd));
@@ -62,6 +72,9 @@ public class MainCityWnd : WindowRoot
         SetText(txtLevel,pd.lv);
         SetText(txtName,pd.name);
 
+        #region expprg
+
+        
         // expprg
         int expPrgVal = (int)(pd.exp * 1.0f / Common.GetExpUpValByLv(pd.lv) * 100);
         SetText(txtExpPrg,expPrgVal+"%");
@@ -82,12 +95,68 @@ public class MainCityWnd : WindowRoot
                 img.fillAmount = 0;
             }
         }
+
+        #endregion
+
+        // 设置自动任务的图标
+        curTaskData = resSvc.GetAutoGuideCfg(pd.guideid);
+        if (curTaskData != null)
+        {
+            SetGuideBtnIcon(curTaskData.npcID);
+        }
+        else {
+            SetGuideBtnIcon(-1);
+        }
+
+
+    }
+
+    private void SetGuideBtnIcon(int npcID) {
+        string spPath = "";
+        Image img = btnGuide.GetComponent<Image>();
+        switch (npcID)
+        {
+            case Constants.NPCWiseMan:
+                spPath = PathDefine.WiseManHead;
+                break;
+            case Constants.NPCGeneral:
+                spPath = PathDefine.GeneralHead;
+                break;
+            case Constants.NPCArtisan:
+                spPath = PathDefine.ArtisanHead;
+                break;
+            case Constants.NPCTrader:
+                spPath = PathDefine.TraderHead;
+                break;
+            default:
+                spPath = PathDefine.TaskHead;
+                break;
+        }
+
+        SetSprite(img,spPath);
     }
     #endregion
 
     #region ClickEvts
+    public void ClickStrongBtn()
+    {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenStrongWnd();
+    }
+
+    public void ClickGuideBtn() {
+        audioSvc.PlayUIAudio(Constants.UIClickBtn);
+        if (curTaskData != null)
+        {
+            MainCitySys.Instance.RunTask(curTaskData);
+        }
+        else {
+            GameRoot.AddTips("更多引导任务，正在开发中...");
+        }
+    }
+
     public void ClickMenuBtn() {
-        audioSvc.PlauUIAudio(Constants.UIExtenBtn);
+        audioSvc.PlayUIAudio(Constants.UIExtenBtn);
 
         menuState = !menuState;
         AnimationClip clip = null;
@@ -101,6 +170,12 @@ public class MainCityWnd : WindowRoot
 
         menuAni.Play(clip.name);
     }
+
+    public void ClickHeadBtn() {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenInfoWnd();
+    }
+
 
     public void RegisterTouchEvt() {
 

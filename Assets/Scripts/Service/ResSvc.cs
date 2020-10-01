@@ -26,6 +26,8 @@ public class ResSvc : MonoBehaviour
 
         InitRDNameCfg(PathDefine.RDNameCfg);
         InitMapCfg(PathDefine.MapCfg);
+        InitGuideCfg(PathDefine.GuideCfg);
+        InitStrongCfg(PathDefine.StrongCfg);
     }
 
     #region 異步加載場景
@@ -46,8 +48,12 @@ public class ResSvc : MonoBehaviour
             float prg = sceneAsync.progress;
             GameRoot.Instance.loadingWnd.SetProgress(prg);
 
+            //Debug.Log(GetType()+ "/AsyncLoadScene()/prg = "+prg);
+
             if (prg == 1)
             {
+
+
                 if (loaded != null)
                 {
                     loaded();
@@ -118,6 +124,24 @@ public class ResSvc : MonoBehaviour
 
     private Action prgCB = null;
     private Dictionary<string, AudioClip> adDic = new Dictionary<string, AudioClip>();
+
+    #endregion
+
+    #region 图片加载
+    private Dictionary<string, Sprite> spDic = new Dictionary<string, Sprite>();
+    public Sprite LoadSprite(string path, bool cache = false) {
+        Sprite sp = null;
+        if (spDic.TryGetValue(path,out sp) == false)
+        {
+            sp = Resources.Load<Sprite>(path);
+            if (cache == true)
+            {
+                spDic.Add(path,sp);
+            }
+        }
+
+        return sp;
+    }
 
     #endregion
 
@@ -275,4 +299,182 @@ public class ResSvc : MonoBehaviour
         return data;
     }
     #endregion
+
+    #region 自动引导配置
+    private Dictionary<int, AutoGuideCfg> guideTaskDic = new Dictionary<int, AutoGuideCfg>();
+    private void InitGuideCfg(string path) {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (xml == false)
+        {
+            Debug.LogError(GetType() + "/InitCityMapCfg()/xml file:" + path + " not exist");
+        }
+        else
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+
+            XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+            for (int i = 0; i < nodLst.Count; i++)
+            {
+                XmlElement ele = nodLst[i] as XmlElement;
+
+                if (ele.GetAttributeNode("ID") == null)
+                {
+                    continue;
+                }
+
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+
+                AutoGuideCfg agc = new AutoGuideCfg
+                {
+                    ID = ID
+                };
+
+                foreach (XmlElement e in nodLst[i].ChildNodes)
+                {
+                    switch (e.Name)
+                    {
+                        case "npcID":
+                            agc.npcID = int.Parse( e.InnerText);
+                            break;
+
+                        case "dilogArr":
+                            agc.dialogArr = (e.InnerText);
+                            break;
+                        case "actID":
+                            agc.actID = int.Parse(e.InnerText);
+                            break;
+
+                        case "coin":
+                            agc.coin = int.Parse(e.InnerText);
+                            break;
+
+                        case "exp":
+                            agc.exp = int.Parse(e.InnerText);
+                            break;
+
+
+                    }
+                }
+
+                guideTaskDic.Add(ID, agc);
+            }
+
+        }
+    }
+
+    public AutoGuideCfg GetAutoGuideCfg(int id) {
+        AutoGuideCfg agc = null;
+        guideTaskDic.TryGetValue(id, out agc);
+
+        return agc;
+    }
+
+    #endregion
+
+    #region 强化升级配置
+
+    // 位置（星级，配置）
+    private Dictionary<int, Dictionary<int, StrongCfg>> strongDic = new Dictionary<int, Dictionary<int, StrongCfg>>();
+
+    private void InitStrongCfg(string path) {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (xml == false)
+        {
+            Debug.LogError(GetType() + "/InitCityMapCfg()/xml file:" + path + " not exist");
+        }
+        else
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
+
+            XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+            for (int i = 0; i < nodLst.Count; i++)
+            {
+                XmlElement ele = nodLst[i] as XmlElement;
+
+                if (ele.GetAttributeNode("ID") == null)
+                {
+                    continue;
+                }
+
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+
+                StrongCfg sc = new StrongCfg
+                {
+                    ID = ID
+                };
+
+                foreach (XmlElement e in nodLst[i].ChildNodes)
+                {
+                    int val = int.Parse(e.InnerText); ;
+                    switch (e.Name)
+                    {
+                        case "pos":
+                            sc.pos = val;
+                            break;
+                        case "starlv":
+                            sc.starlv = val;
+                            break;
+                        case "adddef":
+                            sc.adddef = val;
+                            break;
+                        case "addhp":
+                            sc.addhp = val;
+                            break;
+                        case "addhurt":
+                            sc.addhurt = val;
+                            break;
+                        case "minlv":
+                            sc.minlv = val;
+                            break;
+                        case "coin":
+                            sc.coin = val;
+                            break;
+                        case "crystal":
+                            sc.crystal = val;
+                            break;
+
+
+                    }
+                }
+
+                Dictionary<int, StrongCfg> dic = null;
+                if (strongDic.TryGetValue(sc.pos,out dic) == true)
+                {
+                    dic.Add(sc.starlv,sc);
+                }
+                else
+                {
+                    dic = new Dictionary<int, StrongCfg>();
+                    dic.Add(sc.starlv,sc);
+                    strongDic.Add(sc.pos, dic);
+                }
+
+                
+            }
+
+        }
+    }
+
+    public StrongCfg GetStrongCfg(int pos,int starlv)
+    {
+        StrongCfg sc = null;
+        Dictionary<int, StrongCfg> dic = null;
+        
+        if (strongDic.TryGetValue(pos, out dic) == true)
+        {
+            if (dic.ContainsKey(starlv))
+            {
+                sc = dic[starlv];
+            }
+        }
+
+        return sc;
+    }
+    #endregion
 }
+   
+

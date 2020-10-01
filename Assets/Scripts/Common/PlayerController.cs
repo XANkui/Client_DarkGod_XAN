@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
     private void SetMove() {
         ctrl.Move(transform.forward * Time.deltaTime * Constants.PlayerMoveSpeed);
     }
-    private void SetCamera() {
+    public void SetCamera() {
         if (camTrans !=null)
         {
             camTrans.position = transform.position - camOffset;

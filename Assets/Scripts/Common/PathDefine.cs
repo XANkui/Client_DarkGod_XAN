@@ -15,9 +15,41 @@ public class PathDefine
     #region Cfgs
     public const string RDNameCfg = "ResCfgs/rdname";
     public const string MapCfg = "ResCfgs/map";
+    public const string GuideCfg = "ResCfgs/guide";
+    public const string StrongCfg = "ResCfgs/strong";
+    #endregion
+
+    #region AutoGuide
+    public const string TaskHead = "ResImages/task";
+    public const string WiseManHead = "ResImages/wiseman";
+    public const string GeneralHead = "ResImages/general";
+    public const string ArtisanHead = "ResImages/artisan";
+    public const string TraderHead = "ResImages/trader";
+
+    public const string SelfDialogIcon = "ResImages/assassin";
+    public const string GuideDialogIcon = "ResImages/npcguide";
+    public const string WiseManDialogIcon = "ResImages/npc0";
+    public const string GeneralDialogIcon = "ResImages/npc1";
+    public const string ArtisanDialogIcon = "ResImages/npc2";
+    public const string TraderDialogIcon = "ResImages/npc3";
     #endregion
 
     #region Player
     public const string AssissnCityPlayerPrefab = "PrefabPlayer/AssassinCity";
+    #endregion
+
+    #region Strong
+    public const string ItemArrowBg = "ResImages/btnstrong";
+    public const string ItemPlatBg = "ResImages/charbg3";
+
+    public const string ItemToukui = "ResImages/toukui";
+    public const string ItemBody = "ResImages/body";
+    public const string ItemYaobu = "ResImages/yaobu";
+    public const string ItemHand = "ResImages/hand";
+    public const string ItemLeg = "ResImages/leg";
+    public const string ItemFoot = "ResImages/foot";
+
+    public const string SpStar1 = "ResImages/star1";
+    public const string SpStar2 = "ResImages/star2";
     #endregion
 }
