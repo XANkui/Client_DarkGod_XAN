@@ -38,17 +38,22 @@ public class StrongWnd : WindowRoot
     public Text txtCostCoin;
     public Text txtCostCrystal;
 
+    public Transform costTransRoot;
     public Text txtCoin;
+
+    public Button btnStrong;
     #endregion
 
     private Image[] imgs = new Image [6];
     private PlayerData playerData;
     private int currentIndex;
+    private StrongCfg nextSc;
 
     protected override void InitWnd()
     {
         base.InitWnd();
         btnClose.onClick.AddListener(ClickCloseBtn);
+        btnStrong.onClick.AddListener(ClickStrongBtn);
         playerData = GameRoot.Instance.PlayerData;
         RegClickEvts();
         ClickPosItem(0);
@@ -123,7 +128,7 @@ public class StrongWnd : WindowRoot
             
         }
         int curStarLv = playerData.strongArr[currentIndex];
-        SetText(txtStarLv, curStarLv);
+        SetText(txtStarLv, "- "+curStarLv+"星级");
         for (int i = 0; i < starTransGrid.childCount; i++)
         {
             Image img = starTransGrid.GetChild(i).GetComponent<Image>();
@@ -135,11 +140,92 @@ public class StrongWnd : WindowRoot
                 SetSprite(img, PathDefine.SpStar1);
             }
         }
+
+        int nextStarLv = curStarLv + 1;
+        int sumAddHp = resSvc.GetPropAddValPreLv(currentIndex, nextStarLv, 1);
+        int sumAddHurt = resSvc.GetPropAddValPreLv(currentIndex, nextStarLv, 2);
+        int sumAddDef = resSvc.GetPropAddValPreLv(currentIndex, nextStarLv, 3);
+
+        SetText(propHP1,"+"+sumAddHp);
+        SetText(propHurt1,"+"+sumAddHurt);
+        SetText(propDef1,"+"+sumAddDef);
+
+
+        
+        nextSc = resSvc.GetStrongCfg(currentIndex,nextStarLv);
+        if (nextSc != null)
+        {
+            SetActive(propHP2, true);
+            SetActive(propHurt2, true);
+            SetActive(propDef2, true);
+
+            SetActive(costTransRoot, true);
+            SetActive(propArr1, true);
+            SetActive(propArr2, true);
+            SetActive(propArr3, true);
+
+            SetText(propHP2,"强化后 +"+nextSc.addhp);
+            SetText(propHurt2,"强化后 +"+nextSc.addhurt);
+            SetText(propDef2,"强化后 +"+nextSc.adddef);
+
+            SetText(txtNeedLv,"- 需要等级 ："+nextSc.minlv);
+            SetText(txtCostCoin, nextSc.coin);
+            SetText(txtCostCrystal,nextSc.crystal+"/"+playerData.crystal);
+        }
+        else {
+            SetActive(propHP2,false);
+            SetActive(propHurt2,false);
+            SetActive(propDef2,false);
+
+            SetActive(costTransRoot,false);
+            SetActive(propArr1,false);
+            SetActive(propArr2,false);
+            SetActive(propArr3,false);
+        }
     }
 
     private void ClickCloseBtn() {
         audioSvc.PlayUIAudio(Constants.UIClickBtn);
         SetWndState(false);
+    }
+
+    private void ClickStrongBtn() {
+        audioSvc.PlayUIAudio(Constants.UIClickBtn);
+
+        if (playerData.strongArr[currentIndex] < 10)
+        {
+            if (playerData.lv < nextSc.minlv)
+            {
+                GameRoot.AddTips("当前等级不够");
+                return;
+            }
+            if (playerData.coin < nextSc.coin)
+            {
+                GameRoot.AddTips("当前金币不够");
+                return;
+            }
+            if (playerData.crystal < nextSc.crystal)
+            {
+                GameRoot.AddTips("当前水晶不够");
+                return;
+            }
+
+            netSvc.SendMsg(new GameMsg {
+                cmd= (int)CMD.ReqStrong,
+                reqStrong = new ReqStrong{
+                    pos=currentIndex
+                }
+            });
+        }
+        else {
+            GameRoot.AddTips("星级已经升满");
+        }
+    }
+
+    public void UpdateUI() {
+        audioSvc.PlayUIAudio(Constants.FBItemEnter);
+
+        ClickPosItem(currentIndex);
     }
 
 }

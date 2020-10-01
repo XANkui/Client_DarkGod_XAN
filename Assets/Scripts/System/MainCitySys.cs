@@ -267,6 +267,17 @@ public class MainCitySys : SystemRoot
     public void OpenStrongWnd() {
         strongWnd.SetWndState();
     }
+
+    public void RspStrong(GameMsg msg) {
+        int zhanliPre = Common.GetFightByProps(GameRoot.Instance.PlayerData);
+        GameRoot.Instance.SetPlayerDataByStrong(msg.rspStrong);
+        int zhanliNow = Common.GetFightByProps(GameRoot.Instance.PlayerData);
+        GameRoot.AddTips(Constants.Color("战力提升 +"+(zhanliNow-zhanliPre),TxtColor.Blue));
+
+        strongWnd.UpdateUI();
+        mainCityWnd.RefreshUI();
+
+    }
     #endregion
 }
 

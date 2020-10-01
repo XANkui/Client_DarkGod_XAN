@@ -474,7 +474,51 @@ public class ResSvc : MonoBehaviour
 
         return sc;
     }
+
+    /// <summary>
+    /// 获取之前等级的加成属性
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="starlv"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public int GetPropAddValPreLv(int pos,int starlv,int type) {
+        Dictionary<int, StrongCfg> posDic = null;
+        int val = 0;
+        if (strongDic.TryGetValue(pos,out posDic) == true)
+        {
+            for (int i = 0; i < starlv; i++)
+            {
+                StrongCfg sc;
+                if (posDic.TryGetValue(i,out sc)==true)
+                {
+                    switch (type)
+                    {
+                        case 1://hp
+                            val += sc.addhp;
+                            break;
+
+                        case 2://hurt
+                            val += sc.addhurt;
+                            break;
+
+                        case 3://def
+                            val += sc.adddef;
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
+        return val;
+    }
+
     #endregion
+
+
 }
    
 

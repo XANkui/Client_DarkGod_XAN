@@ -107,6 +107,18 @@ public class NetSvc : MonoBehaviour
                     Common.Log("服务器数据与客户端数据不一致，客户端可能外挂", LogType.Error);
                     GameRoot.AddTips("客户端数据异常");
                     break;
+
+                case ErrorCode.LackLevel:
+                    GameRoot.AddTips("角色等级不够");
+                    break;
+
+                case ErrorCode.LackCoin:
+                    GameRoot.AddTips("金币数量不够");
+                    break;
+
+                case ErrorCode.LackCrystal:
+                    GameRoot.AddTips("水晶数量不够");
+                    break;
                 default:
                     break;
             }
@@ -128,6 +140,10 @@ public class NetSvc : MonoBehaviour
 
             case CMD.RspGuide:
                 MainCitySys.Instance.RspGuide(msg);
+                break;
+
+            case CMD.RspStrong:
+                MainCitySys.Instance.RspStrong(msg);
                 break;
             default:
                 break;

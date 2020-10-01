@@ -68,6 +68,7 @@ public class Constants
     public const string UILoginBtn = "uiLoginBtn";
     public const string UIExtenBtn = "uiExtenBtn";
     public const string UIOpenPage = "uiOpenPage";
+    public const string FBItemEnter = "fbitem";
 
     // UI点击音效
     public const string UIClickBtn = "uiClickBtn";
