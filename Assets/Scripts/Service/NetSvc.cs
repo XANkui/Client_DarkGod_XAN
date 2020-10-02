@@ -145,7 +145,9 @@ public class NetSvc : MonoBehaviour
             case CMD.RspStrong:
                 MainCitySys.Instance.RspStrong(msg);
                 break;
-            default:
+
+            case CMD.PshChat:
+                MainCitySys.Instance.PshChat(msg);
                 break;
         }
     }

@@ -33,6 +33,7 @@ public class MainCityWnd : WindowRoot
     public Button btnHead;
     public Button btnGuide;
     public Button btnStrong;
+    public Button btnChat;
 
     #endregion
 
@@ -56,41 +57,42 @@ public class MainCityWnd : WindowRoot
         btnMenu.onClick.AddListener(ClickMenuBtn);
         btnGuide.onClick.AddListener(ClickGuideBtn);
         btnStrong.onClick.AddListener(ClickStrongBtn);
+        btnChat.onClick.AddListener(ClickChatBtn);
         SetActive(imgDirPoint, false);
-        
+
         RefreshUI();
-        
+
         RegisterTouchEvt();
     }
 
     public void RefreshUI() {
         PlayerData pd = GameRoot.Instance.PlayerData;
 
-        SetText(txtFight,Common.GetFightByProps(pd));
-        SetText(txtPower,"体力:"+pd.power+"/"+Common.GetPowerLimit(pd.lv));
-        imgPowerPrg.fillAmount = pd.power*1.0f/ Common.GetPowerLimit(pd.lv);
-        SetText(txtLevel,pd.lv);
-        SetText(txtName,pd.name);
+        SetText(txtFight, Common.GetFightByProps(pd));
+        SetText(txtPower, "体力:" + pd.power + "/" + Common.GetPowerLimit(pd.lv));
+        imgPowerPrg.fillAmount = pd.power * 1.0f / Common.GetPowerLimit(pd.lv);
+        SetText(txtLevel, pd.lv);
+        SetText(txtName, pd.name);
 
         #region expprg
 
-        
+
         // expprg
         int expPrgVal = (int)(pd.exp * 1.0f / Common.GetExpUpValByLv(pd.lv) * 100);
-        SetText(txtExpPrg,expPrgVal+"%");
+        SetText(txtExpPrg, expPrgVal + "%");
         int index = expPrgVal / 10;
 
         for (int i = 0; i < expPrgTrans.childCount; i++)
         {
             Image img = expPrgTrans.GetChild(i).GetComponent<Image>();
-            if (i<index)
+            if (i < index)
             {
                 img.fillAmount = 1;
             }
-            else if (i==index)
+            else if (i == index)
             {
                 img.fillAmount = expPrgVal % 10 * 1.0f / 10;
-            }else
+            } else
             {
                 img.fillAmount = 0;
             }
@@ -133,11 +135,17 @@ public class MainCityWnd : WindowRoot
                 break;
         }
 
-        SetSprite(img,spPath);
+        SetSprite(img, spPath);
     }
     #endregion
 
     #region ClickEvts
+
+    public void ClickChatBtn() {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenChatWnd();
+    }
+
     public void ClickStrongBtn()
     {
         audioSvc.PlayUIAudio(Constants.UIOpenPage);

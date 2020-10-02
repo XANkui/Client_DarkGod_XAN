@@ -45,6 +45,11 @@ public class WindowRoot : MonoBehaviour
         netSvc = null;
     }
 
+    protected bool GetWndState() {
+
+        return gameObject.activeSelf;
+    }
+
     #region Tool Function
 
     protected void SetActive(GameObject go, bool isActive = true) {

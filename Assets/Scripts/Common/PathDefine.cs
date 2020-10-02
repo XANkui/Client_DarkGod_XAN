@@ -52,4 +52,10 @@ public class PathDefine
     public const string SpStar1 = "ResImages/star1";
     public const string SpStar2 = "ResImages/star2";
     #endregion
+
+    #region Chat
+    public const string SpBtnType1 = "ResImages/btntype1";
+    public const string SpBtnType2 = "ResImages/btntype2";
+
+    #endregion
 }

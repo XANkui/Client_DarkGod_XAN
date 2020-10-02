@@ -47,8 +47,9 @@ public class GameRoot : MonoBehaviour
             canvas.GetChild(i).gameObject.SetActive(false);
         }
 
-        // 实现动态窗口
+        // 显示动态窗口，并显示在最顶层
         dynamicWnd.SetWndState();
+        dynamicWnd.transform.SetAsLastSibling();
     }
 
     /// <summary>

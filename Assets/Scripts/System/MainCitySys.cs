@@ -20,6 +20,7 @@ public class MainCitySys : SystemRoot
     public InfoWnd infoWnd;
     public GuideWnd guideWnd;
     public StrongWnd strongWnd;
+    public ChatWnd chatWnd;
 
     private Transform CharCamTrans;
 
@@ -277,6 +278,16 @@ public class MainCitySys : SystemRoot
         strongWnd.UpdateUI();
         mainCityWnd.RefreshUI();
 
+    }
+    #endregion
+
+    #region chat
+    public void OpenChatWnd() {
+        chatWnd.SetWndState();
+    }
+
+    public void PshChat(GameMsg msg) {
+        chatWnd.AddChatMsg(msg.pshChat.name,msg.pshChat.chat);
     }
     #endregion
 }
