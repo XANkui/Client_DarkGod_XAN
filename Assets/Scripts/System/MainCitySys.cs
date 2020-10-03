@@ -237,27 +237,32 @@ public class MainCitySys : SystemRoot
             case 1:
 
                 // TODO 进入副本
+                EnterFuben();
                 break;
 
             case 2:
 
                 // TODO 进入强化界面
+                OpenStrongWnd();
                 break;
 
             case 3:
 
                 // TODO 进入体力购买
+                OpenBuyWnd(BuyType.BuyPower);
                 break;
 
 
             case 4:
 
                 // TODO 进入金币铸造
+                OpenBuyWnd(BuyType.MKCoin);
                 break;
 
             case 5:
 
                 // TODO 进入世界聊天
+                OpenChatWnd();
                 break;
             default:
                 break;
@@ -271,6 +276,8 @@ public class MainCitySys : SystemRoot
 
     #region Strong
     public void OpenStrongWnd() {
+
+        StopNavTask();
         strongWnd.SetWndState();
     }
 
@@ -288,6 +295,8 @@ public class MainCitySys : SystemRoot
 
     #region chat
     public void OpenChatWnd() {
+
+        StopNavTask();
         chatWnd.SetWndState();
     }
 
@@ -298,6 +307,8 @@ public class MainCitySys : SystemRoot
 
     #region Buy
     public void OpenBuyWnd(BuyType buyType) {
+
+        StopNavTask();
         buyWnd.SetWndState();
         buyWnd.SetBuyType(buyType);
         
@@ -333,6 +344,7 @@ public class MainCitySys : SystemRoot
     #region Task 
     public void OpenTaskWnd()
     {
+        StopNavTask();
         taskWnd.SetWndState();
        
 
@@ -360,6 +372,14 @@ public class MainCitySys : SystemRoot
         {
             taskWnd.RefreshUI();
         }
+    }
+
+    #endregion
+
+    #region Enter Fuben
+    public void EnterFuben() {
+        StopNavTask();
+        FubenSys.Instance.EnterFubenWnd();
     }
 
     #endregion

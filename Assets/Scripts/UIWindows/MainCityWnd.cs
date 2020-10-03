@@ -39,6 +39,7 @@ public class MainCityWnd : WindowRoot
     public Button btnMkCoin;
 
     public Button btnDailytask;
+    public Button btnFuben;
 
     #endregion
 
@@ -62,6 +63,7 @@ public class MainCityWnd : WindowRoot
         btnBuyPower.onClick.AddListener(ClickBuyPowerBtn);
         btnMkCoin.onClick.AddListener(ClickMKCoinBtn);
         btnDailytask.onClick.AddListener(ClickTaskBtn);
+        btnFuben.onClick.AddListener(ClickFubenBtn);
     }
 
     protected override void InitWnd()
@@ -154,6 +156,12 @@ public class MainCityWnd : WindowRoot
     #endregion
 
     #region ClickEvts
+
+    public void ClickFubenBtn()
+    {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.EnterFuben();
+    }
 
     public void ClickTaskBtn()
     {

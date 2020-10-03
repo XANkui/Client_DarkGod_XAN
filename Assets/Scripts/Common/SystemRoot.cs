@@ -15,12 +15,14 @@ public class SystemRoot : MonoBehaviour
     protected ResSvc resSvc = null;
     protected AudioSvc audioSvc = null;
     protected NetSvc netSvc = null;
+    protected TimerSvc timerSvc = null;
     
 
     public virtual void InitSys() {
         resSvc = ResSvc.Instance;
         audioSvc = AudioSvc.Instance;
         netSvc = NetSvc.Instance;
+        timerSvc = TimerSvc.Instance;
     }
 
     public virtual void ClearSys()
@@ -28,5 +30,6 @@ public class SystemRoot : MonoBehaviour
         resSvc = null;
         audioSvc = null;
         netSvc = null;
+        timerSvc = null;
     }
 }

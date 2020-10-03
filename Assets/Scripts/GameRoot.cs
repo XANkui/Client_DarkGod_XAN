@@ -17,6 +17,7 @@ using UnityEngine;
 [RequireComponent(typeof(TimerSvc))]
 [RequireComponent(typeof(LoginSys))]
 [RequireComponent(typeof(MainCitySys))]
+[RequireComponent(typeof(FubenSys))]
 public class GameRoot : MonoBehaviour
 {
     public static GameRoot Instance = null;
@@ -77,6 +78,9 @@ public class GameRoot : MonoBehaviour
 
         MainCitySys mainCity = GetComponent<MainCitySys>();
         mainCity.InitSys();
+
+        FubenSys fuben = GetComponent<FubenSys>();
+        fuben.InitSys();
 
         // 进入登陆场景，并加载相应UI
         login.EnterLogin();
