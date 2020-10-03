@@ -14,6 +14,7 @@ using UnityEngine;
 [RequireComponent(typeof(NetSvc))]
 [RequireComponent(typeof(ResSvc))]
 [RequireComponent(typeof(AudioSvc))]
+[RequireComponent(typeof(TimerSvc))]
 [RequireComponent(typeof(LoginSys))]
 [RequireComponent(typeof(MainCitySys))]
 public class GameRoot : MonoBehaviour
@@ -66,6 +67,9 @@ public class GameRoot : MonoBehaviour
 
         AudioSvc audioSvc = GetComponent<AudioSvc>();
         audioSvc.InitSvc();
+
+        TimerSvc timerSvc = GetComponent<TimerSvc>();
+        timerSvc.InitSvc();
 
         // 业务系统初始化
         LoginSys login = GetComponent<LoginSys>();
@@ -122,4 +126,36 @@ public class GameRoot : MonoBehaviour
 
     }
 
+    public void SetPlayerDataByBuy(RspBuy data)
+    {
+        PlayerData.coin = data.coin;
+        PlayerData.diamond = data.diamond;
+        PlayerData.power = data.power;
+
+    }
+
+    public void SetPlayerDataByPower(PshPower data)
+    {
+        PlayerData.power = data.power;
+       
+
+    }
+
+    public void SetPlayerDataByTask(RspTakeTaskReward data)
+    {
+        PlayerData.coin = data.coin;
+        PlayerData.lv = data.lv;
+        PlayerData.exp = data.exp;
+        PlayerData.taskArr = data.taskArr;
+
+
+    }
+
+    public void SetPlayerDataByTaskPsh(PshTaskPrgs data)
+    {
+        
+        PlayerData.taskArr = data.taskArr;
+
+
+    }
 }

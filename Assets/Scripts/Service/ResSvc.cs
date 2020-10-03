@@ -20,7 +20,7 @@ public class ResSvc : MonoBehaviour
 
     public void InitSvc()
     {
-        Debug.Log(GetType() + "/InitSvc()/Init ResSvc...");
+        
 
         Instance = this;
 
@@ -28,6 +28,9 @@ public class ResSvc : MonoBehaviour
         InitMapCfg(PathDefine.MapCfg);
         InitGuideCfg(PathDefine.GuideCfg);
         InitStrongCfg(PathDefine.StrongCfg);
+        InitTaskRewardCfg(PathDefine.TaskRewardCfg);
+
+        Debug.Log(GetType() + "/InitSvc()/Init ResSvc...");
     }
 
     #region 異步加載場景
@@ -518,7 +521,78 @@ public class ResSvc : MonoBehaviour
 
     #endregion
 
+    #region 任务奖励配置
+    private Dictionary<int, TaskRewardCfg> taskRwdDic = new Dictionary<int, TaskRewardCfg>();
+    private void InitTaskRewardCfg(string path)
+    {
+        TextAsset xml = Resources.Load<TextAsset>(path);
+        if (xml == false)
+        {
+            Debug.LogError(GetType() + "/InitTaskRewardCfg()/xml file:" + path + " not exist");
+        }
+        else
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml.text);
 
+            XmlNodeList nodLst = doc.SelectSingleNode("root").ChildNodes;
+
+            for (int i = 0; i < nodLst.Count; i++)
+            {
+                XmlElement ele = nodLst[i] as XmlElement;
+
+                if (ele.GetAttributeNode("ID") == null)
+                {
+                    continue;
+                }
+
+                int ID = Convert.ToInt32(ele.GetAttributeNode("ID").InnerText);
+
+                TaskRewardCfg trc = new TaskRewardCfg
+                {
+                    ID = ID
+                };
+
+                foreach (XmlElement e in nodLst[i].ChildNodes)
+                {
+                    switch (e.Name)
+                    {
+                        case "taskName":
+                            trc.taskName = e.InnerText;
+                            break;
+
+                        case "coin":
+                            trc.coin = int.Parse(e.InnerText);
+                            break;
+                        case "exp":
+                            trc.exp = int.Parse(e.InnerText);
+                            break;
+
+                        case "count":
+                            trc.count = int.Parse(e.InnerText);
+                            break;
+
+                        
+
+
+                    }
+                }
+
+                taskRwdDic.Add(ID, trc);
+            }
+
+        }
+    }
+
+    public TaskRewardCfg GetTaskRewardCfg(int id)
+    {
+        TaskRewardCfg trc = null;
+        taskRwdDic.TryGetValue(id, out trc);
+
+        return trc;
+    }
+
+    #endregion
 }
-   
+
 

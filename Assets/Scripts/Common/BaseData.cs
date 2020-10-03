@@ -39,6 +39,21 @@ public class MapCfg : BaseData<MapCfg> {
     public Vector3 playerBornRot;
 }
 
+public class TaskRewardCfg:BaseData<TaskRewardCfg> {
+    public string taskName;
+    public int count;
+    public int exp;
+    public int coin;
+}
+
+public class TaskRewardData : BaseData<TaskRewardCfg>
+{
+    
+    public int prgs;
+    public bool isTakenReward;      // 是否领取奖励
+
+}
+
 public class BaseData<T>
 {
     public int ID;

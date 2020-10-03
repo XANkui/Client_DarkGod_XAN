@@ -35,6 +35,11 @@ public class MainCityWnd : WindowRoot
     public Button btnStrong;
     public Button btnChat;
 
+    public Button btnBuyPower;
+    public Button btnMkCoin;
+
+    public Button btnDailytask;
+
     #endregion
 
     private bool menuState = true;
@@ -45,6 +50,20 @@ public class MainCityWnd : WindowRoot
     private AutoGuideCfg curTaskData = null;
 
     #region MainFUnctions
+
+    private void Start()
+    {
+        btnHead.onClick.AddListener(ClickHeadBtn);
+
+        btnMenu.onClick.AddListener(ClickMenuBtn);
+        btnGuide.onClick.AddListener(ClickGuideBtn);
+        btnStrong.onClick.AddListener(ClickStrongBtn);
+        btnChat.onClick.AddListener(ClickChatBtn);
+        btnBuyPower.onClick.AddListener(ClickBuyPowerBtn);
+        btnMkCoin.onClick.AddListener(ClickMKCoinBtn);
+        btnDailytask.onClick.AddListener(ClickTaskBtn);
+    }
+
     protected override void InitWnd()
     {
         base.InitWnd();
@@ -52,12 +71,7 @@ public class MainCityWnd : WindowRoot
         pointDis = Screen.height * 1.0f / Constants.ScreenStandardHeight * Constants.ScreenOPDis;
         dirBgDefaultPos = imgDirBg.transform.position;
 
-        btnHead.onClick.AddListener(ClickHeadBtn);
-
-        btnMenu.onClick.AddListener(ClickMenuBtn);
-        btnGuide.onClick.AddListener(ClickGuideBtn);
-        btnStrong.onClick.AddListener(ClickStrongBtn);
-        btnChat.onClick.AddListener(ClickChatBtn);
+        
         SetActive(imgDirPoint, false);
 
         RefreshUI();
@@ -140,6 +154,23 @@ public class MainCityWnd : WindowRoot
     #endregion
 
     #region ClickEvts
+
+    public void ClickTaskBtn()
+    {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenTaskWnd();
+    }
+
+    public void ClickBuyPowerBtn()
+    {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenBuyWnd(BuyType.BuyPower);
+    }
+    public void ClickMKCoinBtn()
+    {
+        audioSvc.PlayUIAudio(Constants.UIOpenPage);
+        MainCitySys.Instance.OpenBuyWnd(BuyType.MKCoin);
+    }
 
     public void ClickChatBtn() {
         audioSvc.PlayUIAudio(Constants.UIOpenPage);

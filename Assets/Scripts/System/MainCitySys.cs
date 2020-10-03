@@ -21,6 +21,8 @@ public class MainCitySys : SystemRoot
     public GuideWnd guideWnd;
     public StrongWnd strongWnd;
     public ChatWnd chatWnd;
+    public BuyWnd buyWnd;
+    public TaskWnd taskWnd;
 
     private Transform CharCamTrans;
 
@@ -37,7 +39,9 @@ public class MainCitySys : SystemRoot
         Instance = this;
     }
 
+    #region EnterMainCity And Player
 
+   
     public void EnterMainCity() {
         MapCfg mapData = resSvc.GetMapCfgData(Constants.MainCityID);
         resSvc.AsyncLoadScene(mapData.sceneName,()=> {
@@ -99,10 +103,11 @@ public class MainCitySys : SystemRoot
 
         playerCtrl.Dir = dir;
     }
+    #endregion
 
     #region Info
 
-    
+
     public void OpenInfoWnd() {
         StopNavTask();
         if (CharCamTrans == null)
@@ -289,6 +294,60 @@ public class MainCitySys : SystemRoot
     public void PshChat(GameMsg msg) {
         chatWnd.AddChatMsg(msg.pshChat.name,msg.pshChat.chat);
     }
+    #endregion
+
+    #region Buy
+    public void OpenBuyWnd(BuyType buyType) {
+        buyWnd.SetWndState();
+        buyWnd.SetBuyType(buyType);
+        
+    }
+
+    public void RspBuy(GameMsg msg) {
+        RspBuy data = msg.rspBuy;
+        GameRoot.Instance.SetPlayerDataByBuy(data);
+
+        GameRoot.AddTips("购买成功");
+
+        mainCityWnd.RefreshUI();
+
+        buyWnd.SetWndState(false);
+    }
+
+    #endregion
+
+    #region Power
+    public void PshPower(GameMsg msg)
+    {
+        PshPower data = msg.pshPower;
+        GameRoot.Instance.SetPlayerDataByPower(data);
+        mainCityWnd.RefreshUI();
+        
+    }
+    #endregion
+
+    #region Task 
+    public void OpenTaskWnd()
+    {
+        taskWnd.SetWndState();
+       
+
+    }
+
+    public void RspTakeTaskReward(GameMsg msg)
+    {
+        RspTakeTaskReward data = msg.rspTakeTaskReward;
+        GameRoot.Instance.SetPlayerDataByTask(data);
+        taskWnd.RefreshUI();
+        mainCityWnd.RefreshUI();
+    }
+
+    public void PshTaskPrgs(GameMsg msg) {
+        PshTaskPrgs data = msg.pshTaskPrgs;
+        GameRoot.Instance.SetPlayerDataByTaskPsh(data);
+
+    }
+
     #endregion
 }
 

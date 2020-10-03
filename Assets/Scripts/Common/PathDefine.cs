@@ -17,6 +17,7 @@ public class PathDefine
     public const string MapCfg = "ResCfgs/map";
     public const string GuideCfg = "ResCfgs/guide";
     public const string StrongCfg = "ResCfgs/strong";
+    public const string TaskRewardCfg = "ResCfgs/taskreward";
     #endregion
 
     #region AutoGuide
@@ -57,5 +58,9 @@ public class PathDefine
     public const string SpBtnType1 = "ResImages/btntype1";
     public const string SpBtnType2 = "ResImages/btntype2";
 
+    #endregion
+
+    #region TaskReward
+    public const string TaskItemPrefab = "PrefabUI/Item/ItemTask";
     #endregion
 }

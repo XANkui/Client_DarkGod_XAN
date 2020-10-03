@@ -35,6 +35,7 @@ public class ChatWnd : WindowRoot
 
     private ChatType chatType;
     private List<string> chatLst = new List<string>();
+    private bool isCanSend = true;
 
     protected override void InitWnd()
     {
@@ -114,6 +115,12 @@ public class ChatWnd : WindowRoot
     #region Click Events
 
     public void ClickSendBtn() {
+        if (isCanSend == false)
+        {
+            GameRoot.AddTips("每个5秒才能发送一次世界聊天");
+            return;
+        }
+
         if (iptChat.text != null && iptChat.text.Trim() != "") {
             if (iptChat.text.Length > 12)
             {
@@ -130,6 +137,9 @@ public class ChatWnd : WindowRoot
 
                 iptChat.text = "";
                 netSvc.SendMsg(msg);
+                isCanSend = false;
+
+                timerSvc.AddTimeTask((taskId)=> { isCanSend = true; }, 5, PETimeUnit.Second);
             }
         }
         else{

@@ -108,6 +108,10 @@ public class NetSvc : MonoBehaviour
                     GameRoot.AddTips("客户端数据异常");
                     break;
 
+                case ErrorCode.ClientDataError:
+                    Common.Log("客户端数据与客户端数据不一致，客户端可能外挂", LogType.Error);
+                    break;
+
                 case ErrorCode.LackLevel:
                     GameRoot.AddTips("角色等级不够");
                     break;
@@ -148,6 +152,22 @@ public class NetSvc : MonoBehaviour
 
             case CMD.PshChat:
                 MainCitySys.Instance.PshChat(msg);
+                break;
+
+            case CMD.RspBuy:
+                MainCitySys.Instance.RspBuy(msg);
+                break;
+
+            case CMD.PshPower:
+                MainCitySys.Instance.PshPower(msg);
+                break;
+
+            case CMD.RspTakeTaskReward:
+                MainCitySys.Instance.RspTakeTaskReward(msg);
+                break;
+
+            case CMD.PshTaskPrgs:
+                MainCitySys.Instance.PshTaskPrgs(msg);
                 break;
         }
     }

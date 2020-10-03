@@ -2303,7 +2303,7 @@ GameObject:
   - component: {fileID: 9144041014664624771}
   - component: {fileID: 9144041014664624770}
   m_Layer: 0
-  m_Name: btnMkcoin
+  m_Name: btnMkCoin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2952,6 +2952,8 @@ MonoBehaviour:
   btnGuide: {fileID: 9144041015706272587}
   btnStrong: {fileID: 9144041016052585726}
   btnChat: {fileID: 7557323171151060629}
+  btnBuyPower: {fileID: 9144041015750923059}
+  btnMkCoin: {fileID: 9144041014664624770}
 --- !u!1 &9144041015339064044
 GameObject:
   m_ObjectHideFlags: 0
@@ -3565,7 +3567,7 @@ GameObject:
   - component: {fileID: 9144041015750923060}
   - component: {fileID: 9144041015750923059}
   m_Layer: 0
-  m_Name: btnBuy
+  m_Name: btnBuyPower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
