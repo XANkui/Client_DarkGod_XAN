@@ -321,8 +321,12 @@ public class MainCitySys : SystemRoot
     {
         PshPower data = msg.pshPower;
         GameRoot.Instance.SetPlayerDataByPower(data);
-        mainCityWnd.RefreshUI();
-        
+        if (mainCityWnd.GetWndState() ==true)
+        {
+            mainCityWnd.RefreshUI();
+
+        }
+
     }
     #endregion
 
@@ -340,12 +344,22 @@ public class MainCitySys : SystemRoot
         GameRoot.Instance.SetPlayerDataByTask(data);
         taskWnd.RefreshUI();
         mainCityWnd.RefreshUI();
+
+        // 服务器并包处理
+        if (msg.pshTaskPrgs != null)
+        {
+            PshTaskPrgs(msg);
+        }
     }
 
     public void PshTaskPrgs(GameMsg msg) {
         PshTaskPrgs data = msg.pshTaskPrgs;
         GameRoot.Instance.SetPlayerDataByTaskPsh(data);
 
+        if (taskWnd.GetWndState()==true)
+        {
+            taskWnd.RefreshUI();
+        }
     }
 
     #endregion

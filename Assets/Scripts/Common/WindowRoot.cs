@@ -48,7 +48,7 @@ public class WindowRoot : MonoBehaviour
         timerSvc = null;
     }
 
-    protected bool GetWndState() {
+    internal bool GetWndState() {
 
         return gameObject.activeSelf;
     }
