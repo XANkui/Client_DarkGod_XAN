@@ -3,51 +3,41 @@
 作者：仙魁Xan
 邮箱：1272200579@qq.com 
 日期：2020/09/27 16:25:19
-功能：角色控制器
+功能：表现实体角色控制器
 *****************************************************/
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Controller
 {
-    
-    public Animator ani;
+    public GameObject daggeratk1fx;
+
     public CharacterController ctrl;
 
     private Transform camTrans;
-    private Vector2 dir = Vector2.zero;
-    private bool isMove = false;
+   
     private Vector3 camOffset;
     private float targetBlend;
     private float currentBlend;
 
-    public Vector2 Dir { get => dir;
-        set {
-            dir = value;
-            if (value != Vector2.zero)
-            {
-                isMove = true;
-            }
-            else {
-                isMove = false;
-            }
-        }
-    }
+    
 
     // Start is called before the first frame update
     void Start()
     {
-        //Init();
+       // Init();
     }
 
 
     // Update is called once per frame
     void Update()
     {
+
         #region 输入方向
         /*
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         Vector2 _dir = new Vector2(h, v).normalized;
@@ -80,16 +70,29 @@ public class PlayerController : MonoBehaviour
             SetCamera();
         }
 
+        // 技能移动
+        if (skillMove==true )
+        {
+            SetSkillMove();
+
+            SetCamera();
+        }
         
     }
 
-    public void Init() {
+    public override void Init() {
+        base.Init();
         camTrans = Camera.main.transform;
         camOffset = transform.position - camTrans.position;
+        if (daggeratk1fx != null)
+        {
+            fxDic.Add(daggeratk1fx.name, daggeratk1fx);
+
+        }
     }
 
     private void SetDir() {
-        float angle = Vector2.SignedAngle(Dir, new Vector2(0,1)) +camTrans.localEulerAngles.y;
+        float angle = Vector2.SignedAngle(Dir, new Vector2(0, 1))+camTrans.localEulerAngles.y;
         Vector3 eulerAngles = new Vector3(0, angle, 0);
         transform.localEulerAngles = eulerAngles;
     }
@@ -103,7 +106,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void SetBlend(float blend) {
+    public override void SetBlend(float blend) {
         targetBlend = blend;
     }
 
@@ -121,5 +124,25 @@ public class PlayerController : MonoBehaviour
         }
 
         ani.SetFloat("Blend",currentBlend);
+    }
+
+
+    //////////////////////////////////////////////////////////
+
+    public override void SetFX(string fxName, float delayDestory)
+    {
+        GameObject go = null;
+        if (fxDic.TryGetValue(fxName, out go))
+        {
+            go.SetActive(true);
+            timerSvc.AddTimeTask((int tid)=>
+            {
+                go.SetActive(false);
+            },delayDestory);
+        }
+    }
+
+    public void SetSkillMove() {
+        ctrl.Move(transform.forward * Time.deltaTime *skillMoveSpeed);
     }
 }

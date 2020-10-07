@@ -10,6 +10,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class SkillMoveCfg : BaseData<SkillCfg>
+{
+    public int delayTime;
+    public int moveTime;
+    public float moveDis;
+    
+}
+
+public class SkillCfg : BaseData<SkillCfg>
+{
+    public string skillName;
+    public int skillTime;
+    public int aniAction;
+    public string fx;
+    public List<int> skillMoveLst;
+  
+}
+
 public class StrongCfg : BaseData<StrongCfg>
 {
     public int pos;   
@@ -33,6 +51,7 @@ public class AutoGuideCfg : BaseData<AutoGuideCfg> {
 public class MapCfg : BaseData<MapCfg> {
     public string mapName;
     public string sceneName;
+    public int power;
     public Vector3 mainCameraPos;
     public Vector3 mainCameraRot;
     public Vector3 playerBornPos;

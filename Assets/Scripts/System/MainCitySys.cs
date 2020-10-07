@@ -98,7 +98,7 @@ public class MainCitySys : SystemRoot
         }
         else
         {
-            playerCtrl.SetBlend(Constants.BlendWalk);
+            playerCtrl.SetBlend(Constants.BlendMove);
         }
 
         playerCtrl.Dir = dir;
@@ -171,7 +171,7 @@ public class MainCitySys : SystemRoot
                 isNavGuide = true;
                 nav.speed = Constants.PlayerMoveSpeed;
                 nav.SetDestination(npcPosTrans[task.npcID].position);
-                playerCtrl.SetBlend(Constants.BlendWalk);
+                playerCtrl.SetBlend(Constants.BlendMove);
             }
         }
         else {
@@ -213,8 +213,7 @@ public class MainCitySys : SystemRoot
     }
 
     private void OpenGuideWnd() {
-        // TODO
-
+       
         Debug.Log(GetType()+ "/OpenGuideWnd()/ Open Guide Wnd");
         guideWnd.SetWndState();
     }

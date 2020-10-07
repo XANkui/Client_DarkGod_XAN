@@ -23,6 +23,8 @@ public class FubenWnd : WindowRoot
     private void Start()
     {
         btnClose.onClick.AddListener(ClickCloseBtn);
+
+        FubenBtnsAddListener();
     }
 
     protected override void InitWnd()
@@ -59,6 +61,38 @@ public class FubenWnd : WindowRoot
     private void ClickCloseBtn() {
         audioSvc.PlayUIAudio(Constants.UIClickBtn);
         SetWndState(false);
+    }
+
+    private void ClickFubenBtn(int fubenID) {
+        audioSvc.PlayUIAudio(Constants.UIClickBtn);
+        Debug.Log(GetType() + "/FubenBtnsAddListener()/Click fubenID : " + fubenID);
+        // 体力校验
+        int power = resSvc.GetMapCfgData(fubenID).power;
+        if (power > playerData.power)
+        {
+            GameRoot.AddTips("体力值不足");
+        }
+        else {
+            netSvc.SendMsg(new GameMsg {
+                cmd= (int) CMD.ReqFBFight,
+                reqFBFight = new ReqFBFight {
+                    fbId = fubenID
+                }
+            });
+        }
+    }
+
+    private void FubenBtnsAddListener() {
+        for (int i = 0; i < fbBtnArr.Length; i++)
+        {
+            int len = fbBtnArr[i].gameObject.name.Length;
+            int index = int.Parse(fbBtnArr[i].gameObject.name.Substring(len - 1));
+            Debug.Log(GetType()+ "/FubenBtnsAddListener()/name index : "+ index);
+            fbBtnArr[i].onClick.AddListener(()=>{
+
+                ClickFubenBtn(10000+index);
+            });
+        }
     }
 
     #endregion

@@ -6,6 +6,7 @@
 功能：副本业务系统
 *****************************************************/
 
+using Protocal;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,10 +28,21 @@ public class FubenSys : SystemRoot
     }
 
     public void EnterFubenWnd() {
-        OpenFubenWnd();
+        SetStateFubenWnd();
     }
 
-    public void OpenFubenWnd() {
-        fubenWnd.SetWndState();
+    public void SetStateFubenWnd(bool isActive =true) {
+        fubenWnd.SetWndState(isActive);
+    }
+
+    public void RspFBFight(GameMsg msg) {
+        RspFBFight data = msg.rspFBFight;
+        GameRoot.Instance.SetPlayerDataByFBStart(data);
+
+        //关闭界面，开始战斗
+        SetStateFubenWnd(false);
+        MainCitySys.Instance.mainCityWnd.SetWndState(false);
+
+        BattleSys.Instance.StartBattle(data.fbId);
     }
 }

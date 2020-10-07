@@ -18,6 +18,7 @@ using UnityEngine;
 [RequireComponent(typeof(LoginSys))]
 [RequireComponent(typeof(MainCitySys))]
 [RequireComponent(typeof(FubenSys))]
+[RequireComponent(typeof(BattleSys))]
 public class GameRoot : MonoBehaviour
 {
     public static GameRoot Instance = null;
@@ -81,6 +82,9 @@ public class GameRoot : MonoBehaviour
 
         FubenSys fuben = GetComponent<FubenSys>();
         fuben.InitSys();
+
+        BattleSys battle = GetComponent<BattleSys>();
+        battle.InitSys();
 
         // 进入登陆场景，并加载相应UI
         login.EnterLogin();
@@ -159,6 +163,14 @@ public class GameRoot : MonoBehaviour
     {
         
         PlayerData.taskArr = data.taskArr;
+
+
+    }
+
+    public void SetPlayerDataByFBStart(RspFBFight data)
+    {
+
+        PlayerData.power = data.power;
 
 
     }

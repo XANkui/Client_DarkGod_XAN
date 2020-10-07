@@ -18,6 +18,8 @@ public class PathDefine
     public const string GuideCfg = "ResCfgs/guide";
     public const string StrongCfg = "ResCfgs/strong";
     public const string TaskRewardCfg = "ResCfgs/taskreward";
+    public const string SkillCfg = "ResCfgs/skill";
+    public const string SkillMoveCfg = "ResCfgs/skillmove";
     #endregion
 
     #region AutoGuide
@@ -37,6 +39,7 @@ public class PathDefine
 
     #region Player
     public const string AssissnCityPlayerPrefab = "PrefabPlayer/AssassinCity";
+    public const string AssissnBattlePlayerPrefab = "PrefabPlayer/AssassinBattle";
     #endregion
 
     #region Strong

@@ -63,6 +63,7 @@ public class Constants
     // 音频音效名称
     public const string BGLogin = "bgLogin";
     public const string BGMainCity = "bgMainCity";
+    public const string BGHuangYe = "bgHuangYe";
     
     // 登录按钮音效
     public const string UILoginBtn = "uiLoginBtn";
@@ -86,6 +87,9 @@ public class Constants
 
     // 动画平滑
     public const int BlendIdle = 0;
-    public const int BlendWalk = 1;
+    public const int BlendMove = 1;
     public const float AccelerSpeed = 5.0f;
+
+    // Animator Action 触发参数
+    public const int ActionDefault = -1;
 }

@@ -123,6 +123,10 @@ public class NetSvc : MonoBehaviour
                 case ErrorCode.LackCrystal:
                     GameRoot.AddTips("水晶数量不够");
                     break;
+
+                case ErrorCode.LackPower:
+                    GameRoot.AddTips("体力数量不够");
+                    break;
                 default:
                     break;
             }
@@ -168,6 +172,10 @@ public class NetSvc : MonoBehaviour
 
             case CMD.PshTaskPrgs:
                 MainCitySys.Instance.PshTaskPrgs(msg);
+                break;
+
+            case CMD.RspFBFight:
+                FubenSys.Instance.RspFBFight(msg);
                 break;
         }
     }
