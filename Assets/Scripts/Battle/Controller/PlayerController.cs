@@ -14,7 +14,7 @@ public class PlayerController : Controller
 {
     public GameObject daggeratk1fx;
 
-    public CharacterController ctrl;
+   
 
     private Transform camTrans;
    

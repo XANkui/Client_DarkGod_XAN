@@ -13,6 +13,7 @@ using UnityEngine;
 public abstract class Controller : MonoBehaviour
 {
     public Animator ani;
+    public CharacterController ctrl;
 
     protected Dictionary<string, GameObject> fxDic = new Dictionary<string, GameObject>();
     protected TimerSvc timerSvc;

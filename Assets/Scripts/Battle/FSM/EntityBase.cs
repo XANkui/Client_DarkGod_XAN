@@ -17,7 +17,7 @@ public abstract class EntityBase
     public BattleMgr battleMgr = null;
     public StateMgr stateMgr = null;
     public SkillMgr skillMgr = null;
-    public Controller ctrl = null;
+    public Controller controller = null;
 
     // 方向等操作是否可以控制
     public bool canControll = true;
@@ -27,48 +27,58 @@ public abstract class EntityBase
     public void Attack(int skillID) { stateMgr.ChangeState(this,AniState.Attack, skillID); }
 
     public virtual void SetBlend(float blend) {
-        if (ctrl!=null)
+        if (controller!=null)
         {
-            ctrl.SetBlend(blend);
+            controller.SetBlend(blend);
         }
     }
 
     public virtual void SetDir(Vector2 dir)
     {
-        if (ctrl != null)
+        if (controller != null)
         {
-            ctrl.Dir=(dir);
+            controller.Dir=(dir);
         }
     }
 
     public virtual void SetAction(int action)
     {
-        if (ctrl != null)
+        if (controller != null)
         {
-            ctrl.SetAction(action);
+            controller.SetAction(action);
         }
     }
 
     public virtual void SetFX(string fxName,float delayDestory) {
 
-        if (ctrl != null)
+        if (controller != null)
         {
-            ctrl.SetFX(fxName,delayDestory);
+            controller.SetFX(fxName,delayDestory);
         }
     }
 
-    public virtual void AttackEffect(int skillID) {
-        skillMgr.AttackEffect(this,skillID);
+    public virtual void SkillEffect(int skillID) {
+        skillMgr.SkillEffect(this,skillID);
     }
 
+  
+
     public virtual void SetSkillMoveState(bool move, float speed =0) {
-        if (ctrl != null)
+        if (controller != null)
         {
-            ctrl.SetSkillMoveState(move, speed);
+            controller.SetSkillMoveState(move, speed);
         }
     }
 
     public virtual Vector2 GetCurDirInput() {
         return Vector2.zero;
+    }
+
+    public Vector3 GetPos() {
+        return controller.transform.position;
+    }
+
+    public Transform GetTrans() {
+        return controller.transform;
     }
 }

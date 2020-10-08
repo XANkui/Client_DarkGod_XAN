@@ -19,6 +19,9 @@ public class BattleMgr : MonoBehaviour
     private SkillMgr skillMgr;
     private MapMgr mapMgr;
     private EntityPlayer entityPlayer;
+    private MapCfg mapCfg = null;
+
+    private Dictionary<string, EntityMonster> monstersDic = new Dictionary<string, EntityMonster>();
 
     public void Init(int mapid) {
         resSvc = ResSvc.Instance;
@@ -31,12 +34,12 @@ public class BattleMgr : MonoBehaviour
         skillMgr.Init();
 
         // 加载战场地图
-        MapCfg mapCfg = resSvc.GetMapCfgData(mapid);
+        mapCfg = resSvc.GetMapCfgData(mapid);
         resSvc.AsyncLoadScene(mapCfg.sceneName,()=> {
             // 初始化地图数据
             GameObject map = GameObject.FindGameObjectWithTag("MapRoot");
             mapMgr = map.GetComponent<MapMgr>();
-            mapMgr.Init();
+            mapMgr.Init(this);
 
             map.transform.localPosition = Vector3.zero;
             map.transform.localScale = Vector3.one;
@@ -71,8 +74,48 @@ public class BattleMgr : MonoBehaviour
 
         PlayerController playerCtrl = player.GetComponent<PlayerController>();
         playerCtrl.Init();
-        entityPlayer.ctrl = playerCtrl;
+        entityPlayer.controller = playerCtrl;
     }
+
+    public void LoadMonsterByWaveID(int wave) {
+        for (int i = 0; i < mapCfg.monsterLst.Count; i++)
+        {
+            MonsterData md = mapCfg.monsterLst[i];
+            if (md.mWave == wave)
+            {
+                GameObject mst = resSvc.LoadPrefab(md.mCfg.resPath,true);
+                mst.transform.localPosition = md.mBornPos;
+                mst.transform.localEulerAngles = md.mBornRot;
+                mst.transform.localScale = Vector3.one;
+                mst.name = "mst" + md.mWave + "_" + md.mIndex;
+
+                EntityMonster em = new EntityMonster {
+                    battleMgr = this,
+                    stateMgr = stateMgr,
+                    skillMgr = skillMgr
+                };
+
+                MonsterController mc = mst.GetComponent<MonsterController>();
+                mc.Init();
+                em.controller = mc;
+
+                mst.SetActive(false);
+            }
+
+
+        }
+    }
+
+    public List<EntityMonster> GetEntityMonsters() {
+        List<EntityMonster> monsters = new List<EntityMonster>();
+        foreach (var item in monstersDic)
+        {
+            monsters.Add(item.Value);
+        }
+
+        return monsters;
+    }
+
 
     public void SetSelfPlayerMoveDir(Vector2 dir) {
         //Debug.Log(GetType()+ "/SetSelfPlayerMoveDir()/ SetSelfPlayerMoveDir");

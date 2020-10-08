@@ -23,7 +23,9 @@ public class StateAttack : IState
 
     public void Process(EntityBase entityBase, params object[] args)
     {
-        entityBase.AttackEffect((int)args[0]);
+        // 技能伤害计算       
+        // 技能的效果表现
+        entityBase.SkillEffect((int)args[0]);
         Debug.Log(GetType() + "/Process()/ StateAttack args[0]" + args[0]);
 
     }

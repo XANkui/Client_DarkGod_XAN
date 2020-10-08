@@ -12,7 +12,16 @@ using UnityEngine;
 
 public class MapMgr : MonoBehaviour
 {
-    public void Init() {
+    private int waveIndex = 1;
+
+    private BattleMgr battleMgr;
+
+    public void Init(BattleMgr battleMgr) {
+        this.battleMgr = battleMgr;
+
+        // 实例化怪物第一批
+        battleMgr.LoadMonsterByWaveID(waveIndex);
+
         Common.Log("MapMgr init done");
     }
 }
