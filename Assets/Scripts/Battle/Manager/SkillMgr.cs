@@ -58,6 +58,9 @@ public class SkillMgr : MonoBehaviour
     /// <param name="entity"></param>
     /// <param name="skillID"></param>
     public void AttackDamage(EntityBase entity, int skillID) {
+
+        //Debug.Log(GetType()+ "/AttackDamage()/ " );
+
         SkillCfg skillCfg = resSvc.GetSkillCfg(skillID);
         List<int> actionLst = skillCfg.skillActionLst;
         int sum = 0;
@@ -80,33 +83,102 @@ public class SkillMgr : MonoBehaviour
         }
     }
 
-    private void SkillAction(EntityBase entity, SkillCfg skillCfg , int index)
+    private void SkillAction(EntityBase caster, SkillCfg skillCfg , int index)
     {
+        //Debug.Log(GetType() + "/SkillAction()/ ");
 
         SkillActionCfg skillActionCfg = resSvc.GetSkillActionCfg(skillCfg.skillActionLst[index]);
 
         int damage = skillCfg.skillDamageLst[index];
 
         // 获取场景中所有的怪物尸体，遍历运算伤害
-        List<EntityMonster> monsterLst = entity.battleMgr.GetEntityMonsters();        
+        List<EntityMonster> monsterLst = caster.battleMgr.GetEntityMonsters();        
         for (int i = 0; i < monsterLst.Count; i++)
         {
-            EntityMonster em = monsterLst[i];
+            EntityMonster target = monsterLst[i];
 
             // 判断距离和角度
-            if (InRange(entity.GetPos(),em.GetPos(),skillActionCfg.radiu)==true
-                && InAngle(entity.GetTrans(),em.GetPos(),skillActionCfg.angle)== true
+            if (InRange(caster.GetPos(),target.GetPos(),skillActionCfg.radius)==true
+                && InAngle(caster.GetTrans(),target.GetPos(),skillActionCfg.angle)== true
                 )
             {
                 // 计算伤害
-                CalcDamage(entity,damage);
+                CalcDamage(caster, target, skillCfg, damage);
             }
+            Debug.Log(GetType() + "/SkillAction()/ ...");
         }
+        Debug.Log(GetType() + "/SkillAction()/ End");
     }
 
 
-    private void CalcDamage(EntityBase entity, int damage) {
+    System.Random rd = new System.Random();
+    /// <summary>
+    /// 技能伤害计算
+    /// </summary>
+    /// <param name="caster"></param>
+    /// <param name="target"></param>
+    /// <param name="skillCfg"></param>
+    /// <param name="damage"></param>
+    private void CalcDamage(EntityBase caster,EntityBase target, SkillCfg skillCfg, int damage) {
+        //Debug.Log(GetType() + "/CalcDamage()/ ");
 
+        int dmgSum = damage;
+        if (skillCfg.dmgType == DamageType.AD)
+        {
+            // 计算闪避
+            int dodgeNum = PETools.RDInt(1, 100, rd);
+            if (dodgeNum <= target.Props.dodge)
+            {
+                // UI 显示闪避
+                Debug.Log(GetType() + "/()/ Dodge Rate : " + dodgeNum + "/" + target.Props.dodge);
+                return;
+            }
+
+            // 计算属性加成
+            dmgSum += caster.Props.ad;
+
+            //计算暴击
+            int criticalNum = PETools.RDInt(1, 100, rd);
+            if (criticalNum <= caster.Props.critical)
+            {
+                float criticalRate = 1 + PETools.RDInt(1, 100, rd) / 100.0f;
+                dmgSum += (int)criticalRate * dmgSum;
+
+                Debug.Log(GetType() + "/()/ Critical Rate : " + criticalNum + "/" + caster.Props.critical);
+            }
+
+            //计算穿甲
+            int addef = (int)((1 - caster.Props.pierce / 100.0f) * target.Props.addef);
+            dmgSum -= addef;
+        }
+        else if (skillCfg.dmgType == DamageType.AP)
+        {
+            // 计算属性加成
+            dmgSum += caster.Props.ap;
+
+            // 计算魔法抗性
+            dmgSum -= target.Props.apdef;
+
+        }
+        else { }
+
+        // 最终的伤害不能小于0（根据自己的项目来设定）
+        if (dmgSum < 0)
+        {
+            dmgSum = 0;
+
+            return;
+        }
+
+        if (target.HP < dmgSum)
+        {
+            target.HP = 0;
+            //目标死亡
+            target.Die();
+        }
+        else {
+            target.HP -= dmgSum;
+        }
     }
 
     /// <summary>
@@ -117,14 +189,13 @@ public class SkillMgr : MonoBehaviour
     /// <param name="range"></param>
     /// <returns></returns>
     private bool InRange(Vector3 from, Vector3 to, float range) {
-
+        //Debug.Log(GetType() + "/InRange()/ ");
         float dis = Vector3.Distance(from,to);
 
         if (dis > range)
         {
             return false;
         }
-
         return true;
     }
 
@@ -136,6 +207,7 @@ public class SkillMgr : MonoBehaviour
     /// <param name="angle"></param>
     /// <returns></returns>
     private bool InAngle(Transform trans, Vector3 to , float angle) {
+       // Debug.Log(GetType() + "/InAngle()/ ");
         if (angle == 360)
         {
             return true;

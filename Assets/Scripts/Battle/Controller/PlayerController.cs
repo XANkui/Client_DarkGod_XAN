@@ -36,22 +36,22 @@ public class PlayerController : Controller
     {
 
         #region 输入方向
-        /*
 
+#if UNITY_EDITOR  // 编辑状态有效
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         Vector2 _dir = new Vector2(h, v).normalized;
         if (_dir != Vector2.zero)
         {
             Dir = _dir;
-            SetBlend(Constants.BlendWalk);
+            SetBlend(Constants.BlendMove);
         }
         else {
             Dir = Vector2.zero;
             SetBlend(Constants.BlendIdle);
         }
-        */
-        #endregion
+#endif
+#endregion
 
         if (currentBlend != targetBlend)
         {

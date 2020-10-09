@@ -50,7 +50,7 @@ public abstract class Controller : MonoBehaviour
 
     public virtual void SetAction(int action)
     {
-        Debug.Log(GetType()+ "/SetAction()/ action = "+ action);
+        //Debug.Log(GetType()+ "/SetAction()/ action = "+ action);
         ani.SetInteger("Action", action);
     }
 

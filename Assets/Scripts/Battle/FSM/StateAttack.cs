@@ -18,7 +18,7 @@ public class StateAttack : IState
     {
         entityBase.currentAniState = AniState.Attack;
         entityBase.SetDir(Vector2.zero);
-        Debug.Log(GetType() + "/Enter()/ StateAttack ");
+       // Debug.Log(GetType() + "/Enter()/ StateAttack ");
     }
 
     public void Process(EntityBase entityBase, params object[] args)
@@ -34,6 +34,6 @@ public class StateAttack : IState
     {
         entityBase.canControll = true;
         entityBase.SetAction(Constants.ActionDefault);
-        Debug.Log(GetType() + "/Exit()/ StateAttack ");
+        //Debug.Log(GetType() + "/Exit()/ StateAttack ");
     }
 }

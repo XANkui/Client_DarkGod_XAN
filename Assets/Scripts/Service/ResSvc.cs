@@ -68,7 +68,7 @@ public class ResSvc : MonoBehaviour
             float prg = sceneAsync.progress;
             GameRoot.Instance.loadingWnd.SetProgress(prg);
 
-            Debug.Log(GetType()+ "/AsyncLoadScene()/prg = "+prg);
+            //Debug.Log(GetType()+ "/AsyncLoadScene()/prg = "+prg);
 
             if (prg == 1)
             {
@@ -261,7 +261,8 @@ public class ResSvc : MonoBehaviour
 
                 MonsterCfg mc = new MonsterCfg
                 {
-                    ID = ID
+                    ID = ID,
+                    bps = new BattleProps()
                 };
 
                 foreach (XmlElement e in nodLst[i].ChildNodes)
@@ -276,7 +277,37 @@ public class ResSvc : MonoBehaviour
                             mc.resPath = e.InnerText;
                             break;
 
+                        case "hp":
+                            mc.bps.hp = int.Parse(e.InnerText);
+                            break;
 
+                        case "ad":
+                            mc.bps.ad = int.Parse(e.InnerText);
+                            break;
+
+                        case "ap":
+                            mc.bps.ap = int.Parse(e.InnerText);
+                            break;
+
+                        case "addef":
+                            mc.bps.addef = int.Parse(e.InnerText);
+                            break;
+
+                        case "apdef":
+                            mc.bps.apdef = int.Parse(e.InnerText);
+                            break;
+
+                        case "dodge":
+                            mc.bps.dodge = int.Parse(e.InnerText);
+                            break;
+
+                        case "pierce":
+                            mc.bps.pierce = int.Parse(e.InnerText);
+                            break;
+
+                        case "critical":
+                            mc.bps.critical = int.Parse(e.InnerText);
+                            break;
 
                     }
                 }
@@ -396,7 +427,8 @@ public class ResSvc : MonoBehaviour
                                             mIndex = j,
                                             mCfg = GetMonsterCfg(int.Parse(arr[0])),
                                             mBornPos = new Vector3(float.Parse(arr[1]), float.Parse(arr[2]), float.Parse(arr[3])),
-                                            mBornRot = new Vector3(0,float.Parse(arr[4]),0)
+                                            mBornRot = new Vector3(0, float.Parse(arr[4]), 0),
+                                            mLevel = int.Parse(arr[5])
                                         };
 
                                         mc.monsterLst.Add( md);
@@ -768,6 +800,23 @@ public class ResSvc : MonoBehaviour
                             sc.fx = (e.InnerText);
                             break;
 
+
+                        case "dmgType":
+                            if (e.InnerText.Equals("1"))
+                            {
+                                sc.dmgType = DamageType.AD;
+                            }
+                            else if (e.InnerText.Equals("2"))
+                            {
+                                sc.dmgType = DamageType.AP;
+                            }
+                            else {
+                                Debug.Log(GetType()+ "/InitSkillCfg()/dmagType value data Error");
+                            }
+                    
+                            
+                            break;
+
                         case "skillMoveLst":
                             string[] skMoveArr = e.InnerText.Split('|');
                             for (int j = 0; j < skMoveArr.Length; j++)
@@ -932,8 +981,8 @@ public class ResSvc : MonoBehaviour
                             sac.delayTime = int.Parse(e.InnerText);
                             break;
 
-                        case "radiu":
-                            sac.radiu = float.Parse(e.InnerText);
+                        case "radius":
+                            sac.radius = float.Parse(e.InnerText);
                             break;
                         case "angle":
                             sac.angle = float.Parse(e.InnerText);

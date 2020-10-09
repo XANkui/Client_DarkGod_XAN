@@ -145,7 +145,7 @@ public class PlayerCtrlWnd : WindowRoot
             imgDirPoint.transform.localPosition = Vector2.zero;
 
             // TODO 传递方向信息
-            Debug.Log(GetType() + "/OnClickUp()/dir：" + Vector2.zero);
+            //Debug.Log(GetType() + "/OnClickUp()/dir：" + Vector2.zero);
             currentDir = Vector2.zero;
             BattleSys.Instance.SetSelfPlayerMoveDir(currentDir);
         });
@@ -165,7 +165,7 @@ public class PlayerCtrlWnd : WindowRoot
             }
 
             // TODO 传递方向信息
-            Debug.Log(GetType() + "/OnClickUp()/dir：" + dir.normalized);
+            //Debug.Log(GetType() + "/OnClickUp()/dir：" + dir.normalized);
             currentDir = dir.normalized;
             BattleSys.Instance.SetSelfPlayerMoveDir(currentDir);
         });

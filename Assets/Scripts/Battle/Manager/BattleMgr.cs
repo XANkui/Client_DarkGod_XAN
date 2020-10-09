@@ -6,6 +6,7 @@
 功能：战场管理器
 *****************************************************/
 
+using Protocal;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,6 +51,9 @@ public class BattleMgr : MonoBehaviour
             LoadPlayer(mapCfg);
             entityPlayer.Idle();
 
+            // 激活当前批次的怪物
+            ActiveCurrentBatchMonsters();
+
             audioSvc.PlayBGAudio(Constants.BGHuangYe);
         });
 
@@ -64,6 +68,19 @@ public class BattleMgr : MonoBehaviour
         player.transform.position = mapCfg.playerBornPos ;
         player.transform.localEulerAngles = mapCfg.playerBornRot;
         player.transform.localScale = Vector3.one;
+
+        PlayerData pd = GameRoot.Instance.PlayerData;
+        BattleProps props = new BattleProps {
+            hp = pd.hp,
+            ad = pd.ad,
+            ap = pd.ap,
+            addef = pd.addef,
+            apdef = pd.apdef,
+            dodge = pd.dodge,
+            pierce = pd.pierce,
+            critical = pd.critical
+        };
+
         Animator ani = player.GetComponent<Animator>();
         StartCoroutine(AnimatorApplyRootMotion( ani));
         entityPlayer = new EntityPlayer {
@@ -71,6 +88,7 @@ public class BattleMgr : MonoBehaviour
             stateMgr = stateMgr,
             skillMgr = skillMgr
         };
+        entityPlayer.SetBattleProps(props);
 
         PlayerController playerCtrl = player.GetComponent<PlayerController>();
         playerCtrl.Init();
@@ -94,16 +112,36 @@ public class BattleMgr : MonoBehaviour
                     stateMgr = stateMgr,
                     skillMgr = skillMgr
                 };
+                em.md = md;
+                em.SetBattleProps(md.mCfg.bps);
 
                 MonsterController mc = mst.GetComponent<MonsterController>();
                 mc.Init();
                 em.controller = mc;
 
                 mst.SetActive(false);
+
+                monstersDic.Add(mst.name,em);
             }
 
 
         }
+    }
+
+    public void ActiveCurrentBatchMonsters() {
+        TimerSvc.Instance.AddTimeTask((int tid)=> {
+
+            foreach (var item in monstersDic)
+            {
+                item.Value.controller.gameObject.SetActive(true);
+                item.Value.Born();
+                TimerSvc.Instance.AddTimeTask((id)=> {
+                    // 根据出生动画的时间估算1秒之后切换为idle
+                    item.Value.Idle();
+
+                },1000);
+            }
+        },500);
     }
 
     public List<EntityMonster> GetEntityMonsters() {
@@ -166,7 +204,7 @@ public class BattleMgr : MonoBehaviour
 
     private void ReleaseSkill1()
     {
-        Debug.Log(GetType() + "/ReleaseSkill1()/ ");
+        //Debug.Log(GetType() + "/ReleaseSkill1()/ ");
         // 根据配置表传递参数
         entityPlayer.Attack(101);
     }

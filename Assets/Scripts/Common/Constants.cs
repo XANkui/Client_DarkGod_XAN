@@ -17,6 +17,13 @@ public enum TxtColor {
     Yellow
 }
 
+
+public enum DamageType {
+    None,
+    AD=1,
+    AP=2
+}
+
 public class Constants 
 {
     // 颜色定义
@@ -92,4 +99,8 @@ public class Constants
 
     // Animator Action 触发参数
     public const int ActionDefault = -1;
+    public const int ActionBorn = 0;
+    public const int ActionDie = 100;
+
+    public const int DieAniLength = 5000;
 }

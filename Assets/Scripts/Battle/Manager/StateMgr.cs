@@ -16,9 +16,11 @@ public class StateMgr : MonoBehaviour
 
     public void Init() {
 
+        fsm.Add(AniState.Born, new StateBorn());
         fsm.Add(AniState.Idle, new StateIdle());
         fsm.Add(AniState.Move, new StateMove());
         fsm.Add(AniState.Attack, new StateAttack());
+        fsm.Add(AniState.Die, new StateDie());
 
         Common.Log("StateMgr init done");
     }
@@ -27,7 +29,7 @@ public class StateMgr : MonoBehaviour
     public void ChangeState(EntityBase entity, AniState targetState, params object[] args) {
         if (entity.currentAniState == targetState)
         {
-            Debug.Log(GetType() + "/ChangeState()/ Return ");
+            //Debug.Log(GetType() + "/ChangeState()/ Return ");
 
             return;
         }

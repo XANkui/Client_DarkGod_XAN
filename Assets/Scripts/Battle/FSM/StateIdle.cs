@@ -16,12 +16,12 @@ public class StateIdle : IState
     {
         entityBase.currentAniState = AniState.Idle;
         entityBase.SetDir(Vector2.zero);
-        Debug.Log(GetType()+ "/Enter()/ StateIdle ");
+        //Debug.Log(GetType()+ "/Enter()/ StateIdle ");
     }
 
     public void Process(EntityBase entityBase, params object[] args)
     {
-        Debug.Log(GetType() + "/Process()/ StateIdle ");
+        //Debug.Log(GetType() + "/Process()/ StateIdle ");
         // 判断有操作不
         if (entityBase.GetCurDirInput() != Vector2.zero)
         {
@@ -36,6 +36,6 @@ public class StateIdle : IState
 
     public void Exit(EntityBase entityBase, params object[] args)
     {
-        Debug.Log(GetType() + "/Exit()/ StateIdle ");
+       // Debug.Log(GetType() + "/Exit()/ StateIdle ");
     }
 }

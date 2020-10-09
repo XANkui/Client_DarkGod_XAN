@@ -16,11 +16,13 @@ public class MonsterData : BaseData<MonsterData> {
     public MonsterCfg mCfg;
     public Vector3 mBornPos;
     public Vector3 mBornRot;
+    public int mLevel;
 }
 
 public class MonsterCfg : BaseData<MonsterCfg> {
     public string mName;
     public string resPath;
+    public BattleProps bps;
 }
 
 public class SkillMoveCfg : BaseData<SkillCfg>
@@ -34,7 +36,7 @@ public class SkillMoveCfg : BaseData<SkillCfg>
 public class SkillActionCfg : BaseData<SkillCfg>
 {
     public int delayTime;        
-    public float radiu;         //伤害的有效半径
+    public float radius;         //伤害的有效半径
     public float angle;         // 伤害的有效角度
     
 
@@ -46,6 +48,7 @@ public class SkillCfg : BaseData<SkillCfg>
     public int skillTime;
     public int aniAction;
     public string fx;
+    public DamageType dmgType;
     public List<int> skillMoveLst;          // 释放技能，人物移动数据
     public List<int> skillActionLst;        // 释放技能，技能的距离的大小与方向
     public List<int> skillDamageLst;        // (这里可能解释不对)释放仅能，技能的伤害（技能可以随着玩家的成长而变化，或者技能是一个范围的随机值）
@@ -101,4 +104,15 @@ public class TaskRewardData : BaseData<TaskRewardCfg>
 public class BaseData<T>
 {
     public int ID;
+}
+
+public class BattleProps {
+    public int hp;
+    public int ad;
+    public int ap;
+    public int addef;
+    public int apdef;
+    public int dodge;
+    public int pierce;
+    public int critical;
 }

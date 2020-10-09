@@ -22,9 +22,29 @@ public abstract class EntityBase
     // 方向等操作是否可以控制
     public bool canControll = true;
 
+    private BattleProps props;
+    public BattleProps Props { get => props; protected set => props = value; }
+    
+
+    private int hp;
+    public int HP { get => hp;
+        set {
+            Debug.Log(GetType()+"/HP/ hp "+hp+ " to " +value);
+
+            hp = value;
+        }
+    }
+
+    public void Born() { stateMgr.ChangeState(this,AniState.Born, null); }
     public void Idle() { stateMgr.ChangeState(this,AniState.Idle,null); }
     public void Move() { stateMgr.ChangeState(this,AniState.Move,null); }
     public void Attack(int skillID) { stateMgr.ChangeState(this,AniState.Attack, skillID); }
+    public void Die() { stateMgr.ChangeState(this, AniState.Die, null); }
+
+    public virtual void SetBattleProps(BattleProps props) {
+        HP = props.hp;
+        Props = props;
+    }
 
     public virtual void SetBlend(float blend) {
         if (controller!=null)
