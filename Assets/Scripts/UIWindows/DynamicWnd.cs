@@ -16,6 +16,7 @@ public class DynamicWnd : WindowRoot
 {
     public Animation tipsAni;
     public Text txtTips;
+    public Transform hpItemRoot;
 
     protected override void InitWnd()
     {
@@ -24,6 +25,11 @@ public class DynamicWnd : WindowRoot
         // 隐藏消息提示
         SetActive(txtTips,false);
     }
+
+    #region Tips
+
+    private Queue<string> tipsQue = new Queue<string>();
+    private bool IsTipsShow = false;
 
     public void AddTips(string tips) {
         lock (tipsQue) {
@@ -65,7 +71,60 @@ public class DynamicWnd : WindowRoot
             cb();
         }
     }
+    #endregion
 
-    private Queue<string> tipsQue = new Queue<string>();
-    private bool IsTipsShow = false;
+    #region Hp Item
+
+    private Dictionary<string, ItemEntityHp> hpItemDic = new Dictionary<string, ItemEntityHp>();
+
+    public void AddHpItemInfo(string name, Transform trans, int hp) {
+        ItemEntityHp item = null;
+        if (hpItemDic.TryGetValue(name, out item) == true)
+        {
+            return;
+        }
+        else {
+            GameObject go = resSvc.LoadPrefab(PathDefine.HpItemPrefab,true);
+            go.transform.SetParent(hpItemRoot);
+            // 先放到UI外面
+            go.transform.localPosition = new Vector3(-1000,0,0);
+            ItemEntityHp ieh = go.GetComponent<ItemEntityHp>();
+            ieh.InitItemInfo(trans,hp);
+            hpItemDic.Add(name, ieh);
+        }
+    }
+
+    public void SetCiritical(string key, int critical)
+    {
+        ItemEntityHp item = null;
+        if (hpItemDic.TryGetValue(key,out item)==true)
+        {
+            item.SetCiritical(critical);
+        }
+    }
+
+    public void SetDodge(string key)
+    {
+        ItemEntityHp item = null;
+        if (hpItemDic.TryGetValue(key, out item) == true)
+        {
+            item.SetDodge();
+        }
+    }
+
+    public void SetHurt(string key, int hurt)
+    {
+        ItemEntityHp item = null;
+        if (hpItemDic.TryGetValue(key, out item) == true)
+        {
+            item.SetHurt(hurt);
+        }
+    }
+
+    #endregion
+
+
+
+
+
 }

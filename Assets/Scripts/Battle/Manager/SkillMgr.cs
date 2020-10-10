@@ -131,6 +131,7 @@ public class SkillMgr : MonoBehaviour
             {
                 // UI 显示闪避
                 Debug.Log(GetType() + "/()/ Dodge Rate : " + dodgeNum + "/" + target.Props.dodge);
+                target.SetDodge();
                 return;
             }
 
@@ -144,7 +145,9 @@ public class SkillMgr : MonoBehaviour
                 float criticalRate = 1 + PETools.RDInt(1, 100, rd) / 100.0f;
                 dmgSum += (int)criticalRate * dmgSum;
 
+                // UI 暴击
                 Debug.Log(GetType() + "/()/ Critical Rate : " + criticalNum + "/" + caster.Props.critical);
+                target.SetCiritical(dmgSum);
             }
 
             //计算穿甲
@@ -169,6 +172,9 @@ public class SkillMgr : MonoBehaviour
 
             return;
         }
+
+        // UI 显示最终伤害
+        target.SetHurt(dmgSum);
 
         if (target.HP < dmgSum)
         {

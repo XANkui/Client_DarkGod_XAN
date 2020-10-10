@@ -102,4 +102,18 @@ public abstract class EntityBase
     public Transform GetTrans() {
         return controller.transform;
     }
+
+    public virtual void SetCiritical(int critical) {
+        GameRoot.Instance.dynamicWnd.SetCiritical(controller.gameObject.name,critical);
+    }
+
+    public virtual void SetDodge()
+    {
+        GameRoot.Instance.dynamicWnd.SetDodge(controller.gameObject.name);
+    }
+
+    public virtual void SetHurt(int hurt)
+    {
+        GameRoot.Instance.dynamicWnd.SetHurt(controller.gameObject.name, hurt);
+    }
 }

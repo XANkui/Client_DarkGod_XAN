@@ -14,6 +14,7 @@ public abstract class Controller : MonoBehaviour
 {
     public Animator ani;
     public CharacterController ctrl;
+    public Transform hpRoot;
 
     protected Dictionary<string, GameObject> fxDic = new Dictionary<string, GameObject>();
     protected TimerSvc timerSvc;

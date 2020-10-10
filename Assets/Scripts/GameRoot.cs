@@ -50,9 +50,7 @@ public class GameRoot : MonoBehaviour
             canvas.GetChild(i).gameObject.SetActive(false);
         }
 
-        // 显示动态窗口，并显示在最顶层
-        dynamicWnd.SetWndState();
-        dynamicWnd.transform.SetAsLastSibling();
+       
     }
 
     /// <summary>
@@ -89,9 +87,11 @@ public class GameRoot : MonoBehaviour
         // 进入登陆场景，并加载相应UI
         login.EnterLogin();
 
-       
-        
-       
+
+        // 显示动态窗口，并显示在最顶层
+        dynamicWnd.SetWndState();
+        dynamicWnd.transform.SetAsLastSibling();
+
     }
 
     /// <summary>

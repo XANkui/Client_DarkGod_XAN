@@ -122,6 +122,9 @@ public class BattleMgr : MonoBehaviour
                 mst.SetActive(false);
 
                 monstersDic.Add(mst.name,em);
+
+                // 添加对应怪物的血条UI
+                GameRoot.Instance.dynamicWnd.AddHpItemInfo(mst.name,mc.hpRoot, em.HP);
             }
 
 
