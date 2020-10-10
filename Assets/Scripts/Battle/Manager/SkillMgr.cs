@@ -37,6 +37,22 @@ public class SkillMgr : MonoBehaviour
     {
         SkillCfg skillCfg = resSvc.GetSkillCfg(skillID);
 
+
+        // 为了连招中的方向控制
+        if (entity.GetCurDirInput() == Vector2.zero)
+        {
+            // 搜索最近怪物攻击
+            Vector2 dir = entity.CalcTargetDir();
+            if (dir != Vector2.zero)
+            {
+                entity.SetAtkRotation(dir);
+            }
+        }
+        else {
+            entity.SetAtkRotation(entity.GetCurDirInput(),true);
+        }
+
+
         entity.SetAction(skillCfg.aniAction);
         entity.SetFX(skillCfg.fx,skillCfg.skillTime);
 
@@ -181,6 +197,7 @@ public class SkillMgr : MonoBehaviour
             target.HP = 0;
             //目标死亡
             target.Die();
+            target.battleMgr.RmvMonster(target.Name);
         }
         else {
             target.HP -= dmgSum;

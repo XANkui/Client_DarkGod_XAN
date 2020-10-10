@@ -22,15 +22,24 @@ public class StateIdle : IState
     public void Process(EntityBase entityBase, params object[] args)
     {
         //Debug.Log(GetType() + "/Process()/ StateIdle ");
-        // 判断有操作不
-        if (entityBase.GetCurDirInput() != Vector2.zero)
+        // 判断有连招不
+        if (entityBase.nextSkillID != 0)
         {
-            entityBase.Move();
-            entityBase.SetDir(entityBase.GetCurDirInput());
+            entityBase.Attack(entityBase.nextSkillID);
         }
-        else {
-            entityBase.SetBlend(Constants.BlendIdle);
-        }       
+        else
+        {
+            // 判断有移动操作不
+            if (entityBase.GetCurDirInput() != Vector2.zero)
+            {
+                entityBase.Move();
+                entityBase.SetDir(entityBase.GetCurDirInput());
+            }
+            else
+            {
+                entityBase.SetBlend(Constants.BlendIdle);
+            }
+        }
 
     }
 

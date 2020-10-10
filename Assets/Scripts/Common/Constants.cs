@@ -26,6 +26,8 @@ public enum DamageType {
 
 public class Constants 
 {
+    #region 颜色定义
+    
     // 颜色定义
     private const string ColorRed = "<color=#FF0000FF>";
     private const string ColorGreen = "<color=#00FF000FF>";
@@ -55,6 +57,7 @@ public class Constants
 
         return result;
     }
+    #endregion
 
     //AutoGuideNPC
     public const int NPCWiseMan = 0;
@@ -96,6 +99,7 @@ public class Constants
     public const int BlendIdle = 0;
     public const int BlendMove = 1;
     public const float AccelerSpeed = 5.0f;
+    public const float AccelerHpSpeed = 0.3f;
 
     // Animator Action 触发参数
     public const int ActionDefault = -1;
@@ -104,4 +108,7 @@ public class Constants
     public const int ActionHit = 101;
 
     public const int DieAniLength = 5000;
+
+    // 普通攻击的有效间隔(ms)
+    public const int ComboSpace = 500;
 }

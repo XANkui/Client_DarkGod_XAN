@@ -92,7 +92,8 @@ public class BattleMgr : MonoBehaviour
 
         PlayerController playerCtrl = player.GetComponent<PlayerController>();
         playerCtrl.Init();
-        entityPlayer.controller = playerCtrl;
+        entityPlayer.SetCtrl(playerCtrl);
+        entityPlayer.Name = "AssassinBattle";
     }
 
     public void LoadMonsterByWaveID(int wave) {
@@ -117,8 +118,8 @@ public class BattleMgr : MonoBehaviour
 
                 MonsterController mc = mst.GetComponent<MonsterController>();
                 mc.Init();
-                em.controller = mc;
-
+                em.SetCtrl( mc);
+                em.Name = mst.name;
                 mst.SetActive(false);
 
                 monstersDic.Add(mst.name,em);
@@ -136,7 +137,7 @@ public class BattleMgr : MonoBehaviour
 
             foreach (var item in monstersDic)
             {
-                item.Value.controller.gameObject.SetActive(true);
+                item.Value.SetActive(true);
                 item.Value.Born();
                 TimerSvc.Instance.AddTimeTask((id)=> {
                     // 根据出生动画的时间估算1秒之后切换为idle
@@ -157,7 +158,19 @@ public class BattleMgr : MonoBehaviour
         return monsters;
     }
 
+    public void RmvMonster(string key) {
+        EntityMonster entityMonster;
+        if (monstersDic.TryGetValue(key, out entityMonster)==true)
+        {
+            monstersDic.Remove(key);
+            GameRoot.Instance.dynamicWnd.RmvHpItemInfo(key);
+        }
+    }
 
+
+    #region 技能释放和角色控制
+
+    
     public void SetSelfPlayerMoveDir(Vector2 dir) {
         //Debug.Log(GetType()+ "/SetSelfPlayerMoveDir()/ SetSelfPlayerMoveDir");
 
@@ -200,9 +213,41 @@ public class BattleMgr : MonoBehaviour
         }
     }
 
+    private double lastAtkTime = 0;
+    private int[] comboArr = new int[] {111,112,113,114,115 };
+    private int comboIndex = 0;
+
     private void ReleaseNormalAtk()
     {
-        Debug.Log(GetType() + "/ReleaseNormalAtk()/ ");
+        //Debug.Log(GetType() + "/ReleaseNormalAtk()/ ");
+        // 连招判定
+        if (entityPlayer.currentAniState == AniState.Attack)
+        {
+            // 在规定时间内进行二次点击，存数据
+            double nowAtkTime = TimerSvc.Instance.GetNowTime();
+            if (nowAtkTime-lastAtkTime<Constants.ComboSpace && lastAtkTime !=0)
+            {
+                if (comboArr[comboIndex] != comboArr[comboArr.Length - 1])
+                {
+                    comboIndex += 1;
+                    entityPlayer.comboQue.Enqueue(comboArr[comboIndex]);
+                    lastAtkTime = nowAtkTime;
+                }
+                else {
+                    lastAtkTime = 0;
+                    comboIndex = 0;
+                }
+                
+            }
+        }
+        else if(entityPlayer.currentAniState == AniState.Idle 
+            || entityPlayer.currentAniState == AniState.Move)
+        {
+            lastAtkTime = TimerSvc.Instance.GetNowTime();
+            comboIndex = 0;
+            entityPlayer.Attack(comboArr[comboIndex]);
+
+        }
     }
 
     private void ReleaseSkill1()
@@ -214,11 +259,15 @@ public class BattleMgr : MonoBehaviour
 
     private void ReleaseSkill2()
     {
-        Debug.Log(GetType() + "/ReleaseSkill2()/ ");
+        //Debug.Log(GetType() + "/ReleaseSkill2()/ ");
+        // 根据配置表传递参数
+        entityPlayer.Attack(102);
     }
     private void ReleaseSkill3()
     {
-        Debug.Log(GetType() + "/ReleaseSkill3()/ ");
+        //Debug.Log(GetType() + "/ReleaseSkill3()/ ");
+        // 根据配置表传递参数
+        entityPlayer.Attack(103);
     }
 
 
@@ -227,9 +276,11 @@ public class BattleMgr : MonoBehaviour
         return BattleSys.Instance.GetCurrentDir();
     }
 
+    #endregion
+
 
     #region XAN Helper
-    IEnumerator  AnimatorApplyRootMotion(Animator ani) {
+    IEnumerator AnimatorApplyRootMotion(Animator ani) {
         //yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(0.05f);
         ani.applyRootMotion = true; // 避免人物一出生就从原点坠落（取消Animator 的 Apply Root Motion 也有类似效果）

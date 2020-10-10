@@ -94,6 +94,18 @@ public class DynamicWnd : WindowRoot
         }
     }
 
+    public void RmvHpItemInfo(string name)
+    {
+        ItemEntityHp item = null;
+        if (hpItemDic.TryGetValue(name, out item) == true)
+        {
+            Destroy(item.gameObject);
+            hpItemDic.Remove(name);
+            return;
+        }
+        
+    }
+
     public void SetCiritical(string key, int critical)
     {
         ItemEntityHp item = null;
@@ -118,6 +130,15 @@ public class DynamicWnd : WindowRoot
         if (hpItemDic.TryGetValue(key, out item) == true)
         {
             item.SetHurt(hurt);
+        }
+    }
+
+    public void SetHpVal(string key, int oldVal, int newVal)
+    {
+        ItemEntityHp item = null;
+        if (hpItemDic.TryGetValue(key, out item) == true)
+        {
+            item.SetHpVal(oldVal, newVal);
         }
     }
 

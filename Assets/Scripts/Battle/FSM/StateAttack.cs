@@ -17,7 +17,8 @@ public class StateAttack : IState
     public void Enter(EntityBase entityBase,params object[] args)
     {
         entityBase.currentAniState = AniState.Attack;
-        entityBase.SetDir(Vector2.zero);
+        //entityBase.SetDir(Vector2.zero);
+        entityBase.curtSkillCfg = ResSvc.Instance.GetSkillCfg((int)args[0]);
        // Debug.Log(GetType() + "/Enter()/ StateAttack ");
     }
 
@@ -32,8 +33,8 @@ public class StateAttack : IState
 
     public void Exit(EntityBase entityBase, params object[] argss)
     {
-        entityBase.canControll = true;
-        entityBase.SetAction(Constants.ActionDefault);
+        entityBase.ExitCurtSkill();
+        
         //Debug.Log(GetType() + "/Exit()/ StateAttack ");
     }
 }

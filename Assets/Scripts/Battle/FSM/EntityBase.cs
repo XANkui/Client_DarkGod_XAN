@@ -17,23 +17,33 @@ public abstract class EntityBase
     public BattleMgr battleMgr = null;
     public StateMgr stateMgr = null;
     public SkillMgr skillMgr = null;
-    public Controller controller = null;
+    protected Controller controller = null;
 
     // 方向等操作是否可以控制
     public bool canControll = true;
 
     private BattleProps props;
     public BattleProps Props { get => props; protected set => props = value; }
-    
+
+    private string name;
+    public string Name { get => name; set => name = value; }
 
     private int hp;
     public int HP { get => hp;
         set {
+            // UI 血量变化
             Debug.Log(GetType()+"/HP/ hp "+hp+ " to " +value);
-
+            SetHpVal(hp,value);
             hp = value;
         }
     }
+
+    // 普通攻击连招部分
+    public Queue<int> comboQue = new Queue<int>();
+    public int nextSkillID = 0;
+
+
+    public SkillCfg curtSkillCfg;
 
     public void Born() { stateMgr.ChangeState(this,AniState.Born, null); }
     public void Idle() { stateMgr.ChangeState(this,AniState.Idle,null); }
@@ -41,6 +51,26 @@ public abstract class EntityBase
     public void Attack(int skillID) { stateMgr.ChangeState(this,AniState.Attack, skillID); }
     public void Hit() { stateMgr.ChangeState(this, AniState.Hit, null); }
     public void Die() { stateMgr.ChangeState(this, AniState.Die, null); }
+
+    public virtual void SetCtrl(Controller ctrl) {
+        controller = ctrl;
+    }
+
+    public virtual void SetActive(bool isActive = true) {
+        if (controller != null)
+        {
+            controller.gameObject.SetActive(isActive);
+        }
+    }
+
+    public virtual AnimationClip[] GetAniClips() {
+        if (controller != null)
+        {
+            return controller.ani.runtimeAnimatorController.animationClips;
+        }
+
+        return null;
+    }
 
     public virtual void SetBattleProps(BattleProps props) {
         HP = props.hp;
@@ -91,6 +121,20 @@ public abstract class EntityBase
         }
     }
 
+    public virtual void SetAtkRotation(Vector2 dir, bool offset = false) {
+        if (controller != null)
+        {
+            if (offset == true)
+            {
+                controller.SetAtkRotationCam(dir);
+            }
+            else {
+                controller.SetAtkRotationLocal(dir);
+            }
+            
+        }
+    }
+
     public virtual Vector2 GetCurDirInput() {
         return Vector2.zero;
     }
@@ -104,16 +148,59 @@ public abstract class EntityBase
     }
 
     public virtual void SetCiritical(int critical) {
-        GameRoot.Instance.dynamicWnd.SetCiritical(controller.gameObject.name,critical);
+        if (controller != null)
+        {
+            GameRoot.Instance.dynamicWnd.SetCiritical(Name, critical);
+        }
     }
 
     public virtual void SetDodge()
     {
-        GameRoot.Instance.dynamicWnd.SetDodge(controller.gameObject.name);
+        if (controller != null)
+        {
+            GameRoot.Instance.dynamicWnd.SetDodge(Name);
+        }
     }
 
     public virtual void SetHurt(int hurt)
     {
-        GameRoot.Instance.dynamicWnd.SetHurt(controller.gameObject.name, hurt);
+        if(controller != null)
+        {
+            GameRoot.Instance.dynamicWnd.SetHurt(Name, hurt);
+        }
     }
+
+    public virtual void SetHpVal(int oldVal, int newVal)
+    {
+        if (controller != null)
+        {
+            GameRoot.Instance.dynamicWnd.SetHpVal(Name, oldVal, newVal);
+
+        }
+    }
+
+    public virtual Vector2 CalcTargetDir() {
+        return Vector2.zero;
+    }
+
+    public void ExitCurtSkill() {
+        canControll = true;
+
+        // 是连招技能才进入连招数据弹出判断
+        if (curtSkillCfg.isCombo == true)
+        {
+            if (comboQue.Count > 0)
+            {
+                nextSkillID = comboQue.Dequeue();
+            }
+            else
+            {
+                nextSkillID = 0;
+            }
+        }
+        
+        SetAction(Constants.ActionDefault);
+    }
+
+
 }

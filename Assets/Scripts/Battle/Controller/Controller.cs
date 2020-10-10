@@ -16,6 +16,8 @@ public abstract class Controller : MonoBehaviour
     public CharacterController ctrl;
     public Transform hpRoot;
 
+    protected Transform camTrans;
+
     protected Dictionary<string, GameObject> fxDic = new Dictionary<string, GameObject>();
     protected TimerSvc timerSvc;
 
@@ -63,5 +65,19 @@ public abstract class Controller : MonoBehaviour
     public void SetSkillMoveState(bool move, float skillSpeed=0) {
         skillMove = move;
         skillMoveSpeed = skillSpeed;
+    }
+
+    public virtual void SetAtkRotationCam(Vector2 atkDir)
+    {
+        float angle = Vector2.SignedAngle(atkDir, new Vector2(0, 1)) + camTrans.localEulerAngles.y;
+        Vector3 eulerAngles = new Vector3(0, angle, 0);
+        transform.localEulerAngles = eulerAngles;
+    }
+
+    public virtual void SetAtkRotationLocal(Vector2 atkDir)
+    {
+        float angle = Vector2.SignedAngle(atkDir, new Vector2(0, 1)) ;
+        Vector3 eulerAngles = new Vector3(0, angle, 0);
+        transform.localEulerAngles = eulerAngles;
     }
 }

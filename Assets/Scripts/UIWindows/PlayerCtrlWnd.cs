@@ -48,6 +48,85 @@ public class PlayerCtrlWnd : WindowRoot
         btnHead.onClick.AddListener(ResetSkillCfg);
     }
 
+    private void Update()
+    {
+        float delta = Time.deltaTime;
+        if (isSk1CD == true)
+        {
+            // 图片
+            sk1FillCount += delta;
+            if (sk1FillCount >= sk1CDTime)
+            {
+                isSk1CD = false;
+                SetActive(imgSk1CD, false);
+                sk1FillCount = 0;
+            }
+            else
+            {
+                imgSk1CD.fillAmount = 1 - sk1FillCount / sk1CDTime;
+            }
+
+            // 文字
+            sk1NumCount += delta;
+            if (sk1NumCount >= 1)
+            {
+                sk1NumCount -= 1;
+                sk1Num -= 1;
+                SetText(txtSk1CD,sk1Num);
+            }
+        }
+
+        if (isSk2CD == true)
+        {
+            // 图片
+            sk2FillCount += delta;
+            if (sk2FillCount >= sk2CDTime)
+            {
+                isSk2CD = false;
+                SetActive(imgSk2CD, false);
+                sk2FillCount = 0;
+            }
+            else
+            {
+                imgSk2CD.fillAmount = 1 - sk2FillCount / sk2CDTime;
+            }
+
+            // 文字
+            sk2NumCount += delta;
+            if (sk2NumCount >= 1)
+            {
+                sk2NumCount -= 1;
+                sk2Num -= 1;
+                SetText(txtSk2CD, sk2Num);
+            }
+        }
+
+        if (isSk3CD == true)
+        {
+            // 图片
+            sk3FillCount += delta;
+            if (sk3FillCount >= sk3CDTime)
+            {
+                isSk3CD = false;
+                SetActive(imgSk3CD, false);
+                sk3FillCount = 0;
+            }
+            else
+            {
+                imgSk3CD.fillAmount = 1 - sk3FillCount / sk3CDTime;
+            }
+
+            // 文字
+            sk3NumCount += delta;
+            if (sk3NumCount >= 1)
+            {
+                sk3NumCount -= 1;
+                sk3Num -= 1;
+                SetText(txtSk3CD, sk3Num);
+            }
+        }
+    }
+
     protected override void InitWnd()
     {
         base.InitWnd();
@@ -55,6 +134,11 @@ public class PlayerCtrlWnd : WindowRoot
         pointDis = Screen.height * 1.0f / Constants.ScreenStandardHeight * Constants.ScreenOPDis;
         dirBgDefaultPos = imgDirBg.transform.position;
         SetActive(imgDirPoint, false);
+
+        sk1CDTime = resSvc.GetSkillCfg(101).cdTime /1000.0f;
+        sk2CDTime = resSvc.GetSkillCfg(102).cdTime /1000.0f;
+        sk3CDTime = resSvc.GetSkillCfg(103).cdTime /1000.0f;
+
         RefreshUI();
         RegisterTouchEvt();
     }
@@ -107,19 +191,94 @@ public class PlayerCtrlWnd : WindowRoot
 
     }
 
+
+    #region Skill 1
+    [Header("技能 1 CD")]
+    public Image imgSk1CD;
+    public Text txtSk1CD;
+
+    private bool isSk1CD = false;
+    private float sk1CDTime;
+
+    private int sk1Num;
+
+    private float sk1FillCount = 0;
+    private float sk1NumCount = 0;
+
     public void ClickSkill1Btn()
     {
-        BattleSys.Instance.ReqReleaseSkill(1);
+        if (isSk1CD == false)
+        {
+            BattleSys.Instance.ReqReleaseSkill(1);
+            isSk1CD = true;
+            SetActive(imgSk1CD);
+            imgSk1CD.fillAmount = 1;
+            sk1Num = (int)sk1CDTime;
+            SetText(txtSk1CD, sk1Num);
+        }
     }
+
+    #endregion
+
+
+    #region skill 2
+
+    [Header("技能 2 CD")]
+    public Image imgSk2CD;
+    public Text txtSk2CD;
+
+    private bool isSk2CD = false;
+    private float sk2CDTime;
+
+    private int sk2Num;
+
+    private float sk2FillCount = 0;
+    private float sk2NumCount = 0;
 
     public void ClickSkill2Btn()
     {
-        BattleSys.Instance.ReqReleaseSkill(2);
+        if (isSk2CD == false)
+        {
+            BattleSys.Instance.ReqReleaseSkill(2);
+            isSk2CD = true;
+            SetActive(imgSk2CD);
+            imgSk2CD.fillAmount = 1;
+            sk2Num = (int)sk2CDTime;
+            SetText(txtSk2CD, sk2Num);
+        }
     }
+
+    #endregion
+
+    #region skill 3
+
+    [Header("技能 3 CD")]
+    public Image imgSk3CD;
+    public Text txtSk3CD;
+
+    private bool isSk3CD = false;
+    private float sk3CDTime;
+
+    private int sk3Num;
+
+    private float sk3FillCount = 0;
+    private float sk3NumCount = 0;
+    
     public void ClickSkill3Btn()
     {
-        BattleSys.Instance.ReqReleaseSkill(3);
+        if (isSk3CD == false)
+        {
+            BattleSys.Instance.ReqReleaseSkill(3);
+            isSk3CD = true;
+            SetActive(imgSk3CD);
+            imgSk3CD.fillAmount = 1;
+            sk3Num = (int)sk3CDTime;
+            SetText(txtSk3CD, sk3Num);
+        }
     }
+
+    #endregion
+
 
     #endregion
 

@@ -1286,7 +1286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -2748,7 +2748,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3382,6 +3382,9 @@ MonoBehaviour:
   btnSkill2: {fileID: 5716892844925460770}
   btnSkill3: {fileID: 5716892844552352203}
   btnHead: {fileID: 6953735275002782059}
+  currentDir: {x: 0, y: 0}
+  imgSk1CD: {fileID: 5716892843757401710}
+  txtSk1CD: {fileID: 5716892844935813500}
 --- !u!1 &6953735274769231376
 GameObject:
   m_ObjectHideFlags: 0

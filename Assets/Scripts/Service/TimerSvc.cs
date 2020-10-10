@@ -41,4 +41,8 @@ public class TimerSvc : MonoBehaviour
         return pt.AddTimeTask(callback,delay,unit,count);
     }
 
+    public double GetNowTime()
+    {
+        return pt.GetMillisecondsTime();
+    }
 }

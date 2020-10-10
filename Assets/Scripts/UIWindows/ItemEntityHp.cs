@@ -57,7 +57,27 @@ public class ItemEntityHp : MonoBehaviour
         Vector3 screenPos = Camera.main.WorldToScreenPoint(rootTrans.position);
         rect.anchoredPosition = screenPos * scaleRate;
 
+        // 血条动态变化
+        UPdateMixBlend();
+        imgHpYellow.fillAmount = currentPrg;
     }
+
+
+    private void UPdateMixBlend() {
+        if (Mathf.Abs(currentPrg-targetPrg)<Constants.AccelerHpSpeed * Time.deltaTime)
+        {
+            currentPrg = targetPrg;
+        }
+        else if (currentPrg>targetPrg)
+        {
+            currentPrg -= Constants.AccelerHpSpeed * Time.deltaTime;
+        }
+        else
+        {
+            currentPrg += Constants.AccelerHpSpeed * Time.deltaTime;
+        }
+    }
+
 
     public void InitItemInfo(Transform trans,int hp) {
         rootTrans = trans;
@@ -85,5 +105,15 @@ public class ItemEntityHp : MonoBehaviour
         hpAni.Stop();
         txtHp.text = "-" + hurt;
         hpAni.Play();
+    }
+
+
+    private float currentPrg;
+    private float targetPrg;
+    public void SetHpVal(int oldVal,int newVal)
+    {
+        currentPrg = oldVal * 1.0f / hpVal;
+        targetPrg = newVal * 1.0f / hpVal;
+        imgHpRed.fillAmount = targetPrg;
     }
 }

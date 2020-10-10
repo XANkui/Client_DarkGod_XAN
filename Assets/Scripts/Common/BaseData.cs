@@ -45,9 +45,11 @@ public class SkillActionCfg : BaseData<SkillCfg>
 public class SkillCfg : BaseData<SkillCfg>
 {
     public string skillName;
+    public int cdTime;
     public int skillTime;
     public int aniAction;
     public string fx;
+    public bool isCombo;
     public DamageType dmgType;
     public List<int> skillMoveLst;          // 释放技能，人物移动数据
     public List<int> skillActionLst;        // 释放技能，技能的距离的大小与方向

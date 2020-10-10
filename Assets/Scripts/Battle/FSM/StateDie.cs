@@ -23,7 +23,7 @@ public class StateDie : IState
         entityBase.SetAction(Constants.ActionDie);
         // 延时切换为 -1
         TimerSvc.Instance.AddTimeTask((tid) => {
-            entityBase.controller.gameObject.SetActive(false);;
+            entityBase.SetActive(false);;
         }, Constants.DieAniLength);
     }
 
