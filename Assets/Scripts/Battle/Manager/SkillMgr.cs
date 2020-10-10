@@ -178,6 +178,8 @@ public class SkillMgr : MonoBehaviour
         }
         else {
             target.HP -= dmgSum;
+            // 目标受到攻击
+            target.Hit();
         }
     }
 

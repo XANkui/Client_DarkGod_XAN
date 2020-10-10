@@ -20,6 +20,7 @@ public class StateMgr : MonoBehaviour
         fsm.Add(AniState.Idle, new StateIdle());
         fsm.Add(AniState.Move, new StateMove());
         fsm.Add(AniState.Attack, new StateAttack());
+        fsm.Add(AniState.Hit, new StateHit());
         fsm.Add(AniState.Die, new StateDie());
 
         Common.Log("StateMgr init done");

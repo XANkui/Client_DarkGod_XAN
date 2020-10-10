@@ -39,6 +39,7 @@ public abstract class EntityBase
     public void Idle() { stateMgr.ChangeState(this,AniState.Idle,null); }
     public void Move() { stateMgr.ChangeState(this,AniState.Move,null); }
     public void Attack(int skillID) { stateMgr.ChangeState(this,AniState.Attack, skillID); }
+    public void Hit() { stateMgr.ChangeState(this, AniState.Hit, null); }
     public void Die() { stateMgr.ChangeState(this, AniState.Die, null); }
 
     public virtual void SetBattleProps(BattleProps props) {
