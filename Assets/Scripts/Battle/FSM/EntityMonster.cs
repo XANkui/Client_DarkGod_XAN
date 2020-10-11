@@ -145,4 +145,22 @@ public class EntityMonster : EntityBase
             }
         }
     }
+
+    public override bool GetBreakState()
+    {
+        if (md.mCfg.isStop == true)
+        {
+            if (curtSkillCfg != null)
+            {
+                return curtSkillCfg.isBreak;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+    }
 }

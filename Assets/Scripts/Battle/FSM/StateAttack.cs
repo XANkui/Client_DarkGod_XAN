@@ -16,6 +16,9 @@ public class StateAttack : IState
 
     public void Enter(EntityBase entityBase,params object[] args)
     {
+        entityBase.skMoveCBLst.Clear();
+        entityBase.skActionCBLst.Clear();
+
         entityBase.currentAniState = AniState.Attack;
         //entityBase.SetDir(Vector2.zero);
         entityBase.curtSkillCfg = ResSvc.Instance.GetSkillCfg((int)args[0]);

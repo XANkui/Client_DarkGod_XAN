@@ -79,7 +79,14 @@ public class SkillMgr : MonoBehaviour
         entity.canControll = false;
         entity.SetDir(Vector2.zero);    // 方向移动失效
 
-        timerSvc.AddTimeTask((tid)=>{
+        // 判断攻击是否事可中断的，不是，则进入霸体状态
+        if (skillCfg.isBreak == false)
+        {
+            entity.entityState = EntityState.BatiState;
+        }
+
+
+        entity.skCBID = timerSvc.AddTimeTask((tid)=>{
             entity.Idle();
         },skillCfg.skillTime);
     }
@@ -103,10 +110,12 @@ public class SkillMgr : MonoBehaviour
             int index = i;
             if (sum > 0)
             {
-                timerSvc.AddTimeTask((tid) =>
+                int actid = timerSvc.AddTimeTask((tid) =>
                 {
                     SkillAction(entity, skillCfg, index);
+                    entity.RmvActionCB(tid);
                 }, sum);
+                entity.skActionCBLst.Add(actid);
             }
             else {
 
@@ -236,8 +245,14 @@ public class SkillMgr : MonoBehaviour
         }
         else {
             target.HP -= dmgSum;
-            // 目标受到攻击
-            target.Hit();
+
+            // 霸体状态可受伤害，但是不会切换到受伤状态
+            if (target.entityState ==  EntityState.None && target.GetBreakState() ==true)
+            {
+                // 目标受到攻击
+                target.Hit();
+            }
+            
         }
     }
 
@@ -299,9 +314,11 @@ public class SkillMgr : MonoBehaviour
             sumTime += skillMoveCfg.delayTime;
             if (sumTime > 0)
             {
-                timerSvc.AddTimeTask((tid) => {
+                int moveid = timerSvc.AddTimeTask((tid) => {
                     entity.SetSkillMoveState(true, speed);
+                    entity.RmvMoveCB(tid);
                 }, sumTime);
+                entity.skMoveCBLst.Add(moveid);
             }
             else
             {
@@ -309,10 +326,11 @@ public class SkillMgr : MonoBehaviour
 
             }
             sumTime += skillMoveCfg.moveTime;
-            timerSvc.AddTimeTask((tid) => {
+            int stopid= timerSvc.AddTimeTask((tid) => {
                 entity.SetSkillMoveState(false);
+                entity.RmvMoveCB(tid);
             }, sumTime);
-
+            entity.skMoveCBLst.Add(stopid);
 
         }
     }

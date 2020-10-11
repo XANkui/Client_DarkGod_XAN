@@ -30,6 +30,18 @@ public enum EntityType {
     Monster
 }
 
+public enum EntityState {
+    None,
+    BatiState,  // 霸体状态，不受控制，可受到伤害（即是 敌人不可中断的状态）
+}
+
+public enum MonsterType {
+    None,
+    Normal,
+    Boss
+}
+
+
 public class Constants 
 {
     #region 颜色定义
@@ -89,6 +101,9 @@ public class Constants
 
     // UI点击音效
     public const string UIClickBtn = "uiClickBtn";
+
+    // 受伤的声音
+    public const string AssassinHit = "assassin_Hit";
 
     // 游戏开发的参考的标准宽高
     public const int ScreenStandardWidth = 1334;

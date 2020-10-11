@@ -45,4 +45,8 @@ public class TimerSvc : MonoBehaviour
     {
         return pt.GetMillisecondsTime();
     }
+
+    public void DelTask(int tid) {
+        pt.DeleteTimeTask(tid);
+    }
 }

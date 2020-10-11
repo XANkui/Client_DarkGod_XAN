@@ -22,6 +22,8 @@ public class MonsterData : BaseData<MonsterData> {
 public class MonsterCfg : BaseData<MonsterCfg> {
     public string mName;
     public string resPath;
+    public MonsterType mType;       //1是普通怪物；2是Boss怪物
+    public bool isStop;         // 怪物技能是否可以中断
     public int skillID;
     public float atkDis;
     public BattleProps bps;

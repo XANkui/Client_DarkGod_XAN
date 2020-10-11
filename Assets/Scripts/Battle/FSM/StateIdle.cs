@@ -16,6 +16,7 @@ public class StateIdle : IState
     {
         entityBase.currentAniState = AniState.Idle;
         entityBase.SetDir(Vector2.zero);
+        entityBase.skCBID = -1;
         //Debug.Log(GetType()+ "/Enter()/ StateIdle ");
     }
 

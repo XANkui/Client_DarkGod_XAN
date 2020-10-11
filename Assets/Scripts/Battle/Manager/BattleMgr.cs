@@ -186,17 +186,22 @@ public class BattleMgr : MonoBehaviour
         {
             return;
         }
+        if (entityPlayer.currentAniState == AniState.Idle
+            || entityPlayer.currentAniState == AniState.Move
+            )
+        {
+            if (dir == Vector2.zero)
+            {
+                entityPlayer.Idle();
 
-        if (dir==Vector2.zero)
-        {
-            entityPlayer.Idle();
-            
+            }
+            else
+            {
+                entityPlayer.Move();
+                entityPlayer.SetDir(dir);
+            }
         }
-        else
-        {
-            entityPlayer.Move();
-            entityPlayer.SetDir(dir);
-        }
+        
     }
 
     public void ReqReleaseSkill(int index) {
@@ -221,9 +226,9 @@ public class BattleMgr : MonoBehaviour
         }
     }
 
-    private double lastAtkTime = 0;
+    internal double lastAtkTime = 0;
     private int[] comboArr = new int[] {111,112,113,114,115 };
-    private int comboIndex = 0;
+    internal int comboIndex = 0;
 
     private void ReleaseNormalAtk()
     {

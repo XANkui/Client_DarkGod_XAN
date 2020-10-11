@@ -24,10 +24,14 @@ public abstract class EntityBase
     // 可不可以放技能（避免一个技能没有释放完，又触发另一个技能释放）
     public bool canRlsSkill = true;
 
+   
+
     private BattleProps props;
     public BattleProps Props { get => props; protected set => props = value; }
 
     public EntityType entityType = EntityType.None;
+
+    public EntityState entityState = EntityState.None;
 
     private string name;
     public string Name { get => name; set => name = value; }
@@ -48,6 +52,14 @@ public abstract class EntityBase
 
 
     public SkillCfg curtSkillCfg;
+
+
+    // 技能位移的回调ID
+    public List<int> skMoveCBLst = new List<int>(); 
+    // 技能伤害计算的回调ID
+    public List<int> skActionCBLst = new List<int>();
+    // 玩家的技能回调ID
+    public int skCBID = -1;
 
     public void Born() { stateMgr.ChangeState(this,AniState.Born, null); }
     public void Idle() { stateMgr.ChangeState(this,AniState.Idle,null); }
@@ -76,6 +88,14 @@ public abstract class EntityBase
         }
 
         return null;
+    }
+
+    public AudioSource GetAudio() {
+        return controller.gameObject.GetComponent<AudioSource>();
+    }
+
+    public virtual bool GetBreakState() {
+        return true;
     }
 
     public virtual void SetBattleProps(BattleProps props) {
@@ -196,22 +216,65 @@ public abstract class EntityBase
 
     public void ExitCurtSkill() {
         canControll = true;
+        if (curtSkillCfg != null)
+        {        
+            // 如果当前是不可中断技能，之前肯可能进入霸体状体，现在攻击完成，回到正常状态
+            if (curtSkillCfg.isBreak == false)
+            {
+                entityState = EntityState.None;
+            }
 
-        // 是连招技能才进入连招数据弹出判断
-        if (curtSkillCfg.isCombo == true)
-        {
-            if (comboQue.Count > 0)
+            // 是连招技能才进入连招数据弹出判断
+            if (curtSkillCfg.isCombo == true)
             {
-                nextSkillID = comboQue.Dequeue();
+                if (comboQue.Count > 0)
+                {
+                    nextSkillID = comboQue.Dequeue();
+                }
+                else
+                {
+                    nextSkillID = 0;
+                }
             }
-            else
-            {
-                nextSkillID = 0;
-            }
+
+            curtSkillCfg = null;
         }
-        
+
         SetAction(Constants.ActionDefault);
     }
 
+    public void RmvMoveCB(int tid) {
+        int index = -1;
+        for (int i = 0; i < skMoveCBLst.Count; i++)
+        {
+            if (skMoveCBLst[i]==tid)
+            {
+                index = i;
+                break;
+            }
+        }
 
+        if (index != -1)
+        {
+            skMoveCBLst.Remove(index);
+        }
+    }
+
+    public void RmvActionCB(int tid)
+    {
+        int index = -1;
+        for (int i = 0; i < skActionCBLst.Count; i++)
+        {
+            if (skActionCBLst[i] == tid)
+            {
+                index = i;
+                break;
+            }
+        }
+
+        if (index != -1)
+        {
+            skActionCBLst.Remove(index);
+        }
+    }
 }
