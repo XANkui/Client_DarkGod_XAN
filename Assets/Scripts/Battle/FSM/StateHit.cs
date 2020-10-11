@@ -19,6 +19,12 @@ public class StateHit : IState
 
     public void Process(EntityBase entityBase, params object[] args)
     {
+        // 受攻击的时候技能也不能释放
+        if (entityBase.entityType == EntityType.Player)
+        {
+            entityBase.canRlsSkill = false;
+        }
+
         // 停止移动
         entityBase.SetDir(Vector2.zero);
         entityBase.SetAction(Constants.ActionHit);

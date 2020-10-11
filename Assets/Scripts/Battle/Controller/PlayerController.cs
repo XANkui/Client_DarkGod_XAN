@@ -196,4 +196,6 @@ public class PlayerController : Controller
     public void SetSkillMove() {
         ctrl.Move(transform.forward * Time.deltaTime *skillMoveSpeed);
     }
+
+    
 }

@@ -30,6 +30,11 @@ public class PlayerCtrlWnd : WindowRoot
 
     public Button btnHead;
 
+    [Header("HP")]
+    public Image imgPlayerHp;
+    public Text txtHp;
+    int HPSum;
+
     private bool menuState = true;
     private float pointDis;
     private Vector2 dirPointStartPos = Vector2.zero;
@@ -135,6 +140,10 @@ public class PlayerCtrlWnd : WindowRoot
         dirBgDefaultPos = imgDirBg.transform.position;
         SetActive(imgDirPoint, false);
 
+        HPSum = GameRoot.Instance.PlayerData.hp;
+        SetText(txtHp, HPSum + "/"+ HPSum);
+        imgPlayerHp.fillAmount = 1;
+
         sk1CDTime = resSvc.GetSkillCfg(101).cdTime /1000.0f;
         sk2CDTime = resSvc.GetSkillCfg(102).cdTime /1000.0f;
         sk3CDTime = resSvc.GetSkillCfg(103).cdTime /1000.0f;
@@ -183,6 +192,11 @@ public class PlayerCtrlWnd : WindowRoot
 
     }
 
+    public void SetPlayerHpBarVal(int val) {
+        SetText(txtHp, val + "/" + HPSum);
+        imgPlayerHp.fillAmount = val * 1.0f / HPSum;
+    }
+
     #region Click Events
 
     public void ClickNormalAtkBtn()
@@ -207,7 +221,7 @@ public class PlayerCtrlWnd : WindowRoot
 
     public void ClickSkill1Btn()
     {
-        if (isSk1CD == false)
+        if (isSk1CD == false && GetCanRlsSkill()==true)
         {
             BattleSys.Instance.ReqReleaseSkill(1);
             isSk1CD = true;
@@ -237,7 +251,7 @@ public class PlayerCtrlWnd : WindowRoot
 
     public void ClickSkill2Btn()
     {
-        if (isSk2CD == false)
+        if (isSk2CD == false && GetCanRlsSkill() == true)
         {
             BattleSys.Instance.ReqReleaseSkill(2);
             isSk2CD = true;
@@ -266,7 +280,7 @@ public class PlayerCtrlWnd : WindowRoot
     
     public void ClickSkill3Btn()
     {
-        if (isSk3CD == false)
+        if (isSk3CD == false && GetCanRlsSkill() == true)
         {
             BattleSys.Instance.ReqReleaseSkill(3);
             isSk3CD = true;
@@ -332,6 +346,11 @@ public class PlayerCtrlWnd : WindowRoot
     #endregion
 
 
+
+    public bool GetCanRlsSkill()
+    {
+        return BattleSys.Instance.battleMgr.CanRlsSkill();
+    }
     #region 测试方法
 
     private void ResetSkillCfg() {

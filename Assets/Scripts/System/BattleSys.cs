@@ -15,7 +15,7 @@ public class BattleSys : SystemRoot
     public PlayerCtrlWnd playerCtrlWnd;
 
 
-    private BattleMgr battleMgr;
+    internal BattleMgr battleMgr;
 
     public static BattleSys Instance = null;
     public override void InitSys()

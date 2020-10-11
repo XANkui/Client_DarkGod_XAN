@@ -37,19 +37,35 @@ public class SkillMgr : MonoBehaviour
     {
         SkillCfg skillCfg = resSvc.GetSkillCfg(skillID);
 
-
-        // 为了连招中的方向控制
-        if (entity.GetCurDirInput() == Vector2.zero)
+        // 判断玩家的技能是否忽略碰撞效果
+        if (skillCfg.isCollide ==false)
         {
-            // 搜索最近怪物攻击
-            Vector2 dir = entity.CalcTargetDir();
-            if (dir != Vector2.zero)
-            {
-                entity.SetAtkRotation(dir);
-            }
+            // 忽略掉Player 和 Monster 层的碰撞
+            Physics.IgnoreLayerCollision(9,10);
+
+            // 技能释放完成后恢复碰撞
+            TimerSvc.Instance.AddTimeTask((tid)=> {
+                Physics.IgnoreLayerCollision(9, 10, false);
+            }, skillCfg.skillTime);
         }
-        else {
-            entity.SetAtkRotation(entity.GetCurDirInput(),true);
+
+        // 玩家才进行方向锁定攻击，怪物不需要（避免怪物攻击抖动）
+        if (entity.entityType == EntityType.Player)
+        {        
+            // player 为了连招中的方向控制
+            if (entity.GetCurDirInput() == Vector2.zero)
+            {
+                // 搜索最近怪物攻击
+                Vector2 dir = entity.CalcTargetDir();
+                if (dir != Vector2.zero)
+                {
+                    entity.SetAtkRotation(dir);
+                }
+            }
+            else {
+                entity.SetAtkRotation(entity.GetCurDirInput(),true);
+            }
+
         }
 
 
@@ -107,22 +123,41 @@ public class SkillMgr : MonoBehaviour
 
         int damage = skillCfg.skillDamageLst[index];
 
-        // 获取场景中所有的怪物尸体，遍历运算伤害
-        List<EntityMonster> monsterLst = caster.battleMgr.GetEntityMonsters();        
-        for (int i = 0; i < monsterLst.Count; i++)
+        // 判断是怪物还是玩家攻击，避免怪物打怪物
+        if (caster.entityType ==EntityType.Monster)
         {
-            EntityMonster target = monsterLst[i];
-
+            EntityPlayer player = caster.battleMgr.entityPlayer;
             // 判断距离和角度
-            if (InRange(caster.GetPos(),target.GetPos(),skillActionCfg.radius)==true
-                && InAngle(caster.GetTrans(),target.GetPos(),skillActionCfg.angle)== true
+            if (InRange(caster.GetPos(), player.GetPos(), skillActionCfg.radius) == true
+                && InAngle(caster.GetTrans(), player.GetPos(), skillActionCfg.angle) == true
                 )
             {
                 // 计算伤害
-                CalcDamage(caster, target, skillCfg, damage);
+                CalcDamage(caster, player, skillCfg, damage);
             }
             Debug.Log(GetType() + "/SkillAction()/ ...");
         }
+        else if(caster.entityType == EntityType.Player)
+        {
+            // 获取场景中所有的怪物尸体，遍历运算伤害
+            List<EntityMonster> monsterLst = caster.battleMgr.GetEntityMonsters();
+            for (int i = 0; i < monsterLst.Count; i++)
+            {
+                EntityMonster monster = monsterLst[i];
+
+                // 判断距离和角度
+                if (InRange(caster.GetPos(), monster.GetPos(), skillActionCfg.radius) == true
+                    && InAngle(caster.GetTrans(), monster.GetPos(), skillActionCfg.angle) == true
+                    )
+                {
+                    // 计算伤害
+                    CalcDamage(caster, monster, skillCfg, damage);
+                }
+                Debug.Log(GetType() + "/SkillAction()/ ...");
+            }
+        }
+
+        
         Debug.Log(GetType() + "/SkillAction()/ End");
     }
 

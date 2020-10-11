@@ -24,6 +24,12 @@ public class StateAttack : IState
 
     public void Process(EntityBase entityBase, params object[] args)
     {
+        // 正在释放技能中其他技能也不能释放
+        if (entityBase.entityType ==EntityType.Player)
+        {
+            entityBase.canRlsSkill = false;
+        }
+
         // 技能伤害计算       
         // 技能的效果表现
         entityBase.SkillEffect((int)args[0]);

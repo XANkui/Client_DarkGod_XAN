@@ -19,7 +19,7 @@ public class BattleMgr : MonoBehaviour
     private StateMgr stateMgr;
     private SkillMgr skillMgr;
     private MapMgr mapMgr;
-    private EntityPlayer entityPlayer;
+    internal EntityPlayer entityPlayer;
     private MapCfg mapCfg = null;
 
     private Dictionary<string, EntityMonster> monstersDic = new Dictionary<string, EntityMonster>();
@@ -60,6 +60,14 @@ public class BattleMgr : MonoBehaviour
         Common.Log("BattleMgr init done");
     }
 
+    private void Update()
+    {
+        foreach (var item in monstersDic)
+        {
+            EntityMonster monster = item.Value;
+            monster.TickAILogic();
+        }
+    }
 
     private void LoadPlayer(MapCfg mapCfg)
     {
@@ -278,6 +286,10 @@ public class BattleMgr : MonoBehaviour
 
     #endregion
 
+
+    public bool CanRlsSkill() {
+        return entityPlayer.canRlsSkill;
+    }
 
     #region XAN Helper
     IEnumerator AnimatorApplyRootMotion(Animator ani) {

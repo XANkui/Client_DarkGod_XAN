@@ -29,6 +29,12 @@ public class StateIdle : IState
         }
         else
         {
+            // 进入Idle 状态的时候可以释放技能了
+            if (entityBase.entityType == EntityType.Player)
+            {
+                entityBase.canRlsSkill = true;
+            }
+
             // 判断有移动操作不
             if (entityBase.GetCurDirInput() != Vector2.zero)
             {

@@ -13,6 +13,10 @@ using UnityEngine;
 public class EntityPlayer : EntityBase
 {
 
+    public EntityPlayer() {
+        entityType = EntityType.Player;
+    }
+
     public override Vector2 GetCurDirInput()
     {
         return battleMgr.GetCurDirInput();
@@ -68,5 +72,13 @@ public class EntityPlayer : EntityBase
         return targetMonster;
     }
 
+    public override void SetHpVal(int oldVal, int newVal)
+    {
+        BattleSys.Instance.playerCtrlWnd.SetPlayerHpBarVal(newVal);
+    }
 
+    public override void SetDodge()
+    {
+        GameRoot.Instance.dynamicWnd.SetPlayerDodge();
+    }
 }

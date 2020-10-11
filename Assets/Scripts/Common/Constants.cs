@@ -24,6 +24,12 @@ public enum DamageType {
     AP=2
 }
 
+public enum EntityType {
+    None,
+    Player,
+    Monster
+}
+
 public class Constants 
 {
     #region 颜色定义
@@ -93,7 +99,7 @@ public class Constants
 
     // 角色移动速度
     public const int PlayerMoveSpeed = 8;
-    public const int MonsterMoveSpeed = 4;
+    public const int MonsterMoveSpeed = 3;
 
     // 动画平滑
     public const int BlendIdle = 0;

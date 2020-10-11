@@ -17,6 +17,7 @@ public class DynamicWnd : WindowRoot
     public Animation tipsAni;
     public Text txtTips;
     public Transform hpItemRoot;
+    public Animation playerDodgeAni;
 
     protected override void InitWnd()
     {
@@ -73,7 +74,7 @@ public class DynamicWnd : WindowRoot
     }
     #endregion
 
-    #region Hp Item
+    #region 怪物 Hp Item
 
     private Dictionary<string, ItemEntityHp> hpItemDic = new Dictionary<string, ItemEntityHp>();
 
@@ -145,7 +146,14 @@ public class DynamicWnd : WindowRoot
     #endregion
 
 
+    #region Player HP Item
 
+    public void SetPlayerDodge() {
+        playerDodgeAni.Stop();
+        playerDodgeAni.Play();
+    }
+
+    #endregion
 
 
 }

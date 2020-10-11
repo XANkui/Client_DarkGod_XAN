@@ -22,6 +22,8 @@ public class MonsterData : BaseData<MonsterData> {
 public class MonsterCfg : BaseData<MonsterCfg> {
     public string mName;
     public string resPath;
+    public int skillID;
+    public float atkDis;
     public BattleProps bps;
 }
 
@@ -50,6 +52,8 @@ public class SkillCfg : BaseData<SkillCfg>
     public int aniAction;
     public string fx;
     public bool isCombo;
+    public bool isCollide;
+    public bool isBreak;
     public DamageType dmgType;
     public List<int> skillMoveLst;          // 释放技能，人物移动数据
     public List<int> skillActionLst;        // 释放技能，技能的距离的大小与方向

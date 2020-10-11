@@ -277,6 +277,14 @@ public class ResSvc : MonoBehaviour
                             mc.resPath = e.InnerText;
                             break;
 
+                        case "skillID":
+                            mc.skillID = int.Parse(e.InnerText);
+                            break;
+
+                        case "atkDis":
+                            mc.atkDis = float.Parse(e.InnerText);
+                            break;
+
                         case "hp":
                             mc.bps.hp = int.Parse(e.InnerText);
                             break;
@@ -803,6 +811,14 @@ public class ResSvc : MonoBehaviour
                             break;
                         case "isCombo":
                             sc.isCombo = (e.InnerText).Equals("1");
+                            break;
+
+                        case "isCollide":
+                            sc.isCollide = (e.InnerText).Equals("1");
+                            break;
+
+                        case "isBreak":
+                            sc.isBreak = (e.InnerText).Equals("1");
                             break;
 
                         case "dmgType":

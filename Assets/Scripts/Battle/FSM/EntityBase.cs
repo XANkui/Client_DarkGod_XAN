@@ -21,9 +21,13 @@ public abstract class EntityBase
 
     // 方向等操作是否可以控制
     public bool canControll = true;
+    // 可不可以放技能（避免一个技能没有释放完，又触发另一个技能释放）
+    public bool canRlsSkill = true;
 
     private BattleProps props;
     public BattleProps Props { get => props; protected set => props = value; }
+
+    public EntityType entityType = EntityType.None;
 
     private string name;
     public string Name { get => name; set => name = value; }
@@ -51,6 +55,8 @@ public abstract class EntityBase
     public void Attack(int skillID) { stateMgr.ChangeState(this,AniState.Attack, skillID); }
     public void Hit() { stateMgr.ChangeState(this, AniState.Hit, null); }
     public void Die() { stateMgr.ChangeState(this, AniState.Die, null); }
+
+    public virtual void TickAILogic() { }
 
     public virtual void SetCtrl(Controller ctrl) {
         controller = ctrl;
@@ -147,7 +153,10 @@ public abstract class EntityBase
         return controller.transform;
     }
 
-    public virtual void SetCiritical(int critical) {
+    #region 战斗 UI 显示部分
+
+    public virtual void SetCiritical(int critical)
+    {
         if (controller != null)
         {
             GameRoot.Instance.dynamicWnd.SetCiritical(Name, critical);
@@ -164,7 +173,7 @@ public abstract class EntityBase
 
     public virtual void SetHurt(int hurt)
     {
-        if(controller != null)
+        if (controller != null)
         {
             GameRoot.Instance.dynamicWnd.SetHurt(Name, hurt);
         }
@@ -179,6 +188,8 @@ public abstract class EntityBase
         }
     }
 
+    #endregion
+       
     public virtual Vector2 CalcTargetDir() {
         return Vector2.zero;
     }
