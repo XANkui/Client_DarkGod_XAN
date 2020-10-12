@@ -22,6 +22,8 @@ public class BattleMgr : MonoBehaviour
     internal EntityPlayer entityPlayer;
     private MapCfg mapCfg = null;
 
+    public bool triggerCheck = true;
+
     private Dictionary<string, EntityMonster> monstersDic = new Dictionary<string, EntityMonster>();
 
     public void Init(int mapid) {
@@ -66,6 +68,20 @@ public class BattleMgr : MonoBehaviour
         {
             EntityMonster monster = item.Value;
             monster.TickAILogic();
+        }
+
+        if (mapMgr != null)
+        {
+            if (monstersDic.Count == 0&& triggerCheck ==true)
+            {
+                triggerCheck = false;
+                bool isExit = mapMgr.SetNextTriggerOn();
+
+                if (isExit == false)
+                {
+                    // 关卡结束，结算界面
+                }
+            }
         }
     }
 
@@ -132,8 +148,16 @@ public class BattleMgr : MonoBehaviour
 
                 monstersDic.Add(mst.name,em);
 
-                // 添加对应怪物的血条UI
-                GameRoot.Instance.dynamicWnd.AddHpItemInfo(mst.name,mc.hpRoot, em.HP);
+                if (md.mCfg.mType == MonsterType.Normal)
+                {
+                    // 添加对应怪物的血条UI
+                    GameRoot.Instance.dynamicWnd.AddHpItemInfo(mst.name, mc.hpRoot, em.HP);
+                }
+                else if (md.mCfg.mType == MonsterType.Boss)
+                {
+                    BattleSys.Instance.playerCtrlWnd.SetBossHpBarState(true);
+                }
+                
             }
 
 

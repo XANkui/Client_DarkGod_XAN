@@ -50,6 +50,9 @@ public class MainCitySys : SystemRoot
             // 加载游戏主角
             LoadPlayer(mapData);
 
+            // 用玩家身上的声音监听，禁用GameRoot的
+            GameRoot.Instance.GetComponent<AudioListener>().enabled = false;
+
             // 打开主城的UI
             mainCityWnd.SetWndState(true);
 

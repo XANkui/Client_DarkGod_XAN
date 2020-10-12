@@ -277,4 +277,42 @@ public abstract class EntityBase
             skActionCBLst.Remove(index);
         }
     }
+
+    public void RmvSkillCB() {
+        SetDir(Vector2.zero);
+        SetSkillMoveState(false);
+
+
+        // 受伤中断操作
+        for (int i = 0; i < skActionCBLst.Count; i++)
+        {
+            int tid = skActionCBLst[i];
+            TimerSvc.Instance.DelTask(tid);
+        }
+        for (int i = 0; i < skMoveCBLst.Count; i++)
+        {
+            int tid = skMoveCBLst[i];
+            TimerSvc.Instance.DelTask(tid);
+        }
+
+        // 攻击被中断，删除定时回调
+        if (skCBID != -1)
+        {
+            TimerSvc.Instance.DelTask(skCBID);
+            skCBID = -1;
+        }
+
+        skActionCBLst.Clear();
+        skMoveCBLst.Clear();
+
+        // 中断后清空连招数据
+        if (nextSkillID != 0 || comboQue.Count > 0)
+        {
+            nextSkillID = 0;
+            comboQue.Clear();
+
+            battleMgr.lastAtkTime = 0;
+            battleMgr.comboIndex = 0;
+        }
+    }
 }

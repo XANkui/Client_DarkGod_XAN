@@ -15,6 +15,7 @@ public class StateDie : IState
     public void Enter(EntityBase entityBase, params object[] args)
     {
         entityBase.currentAniState = AniState.Die;
+        entityBase.RmvSkillCB();
     }
 
     public void Process(EntityBase entityBase, params object[] args)

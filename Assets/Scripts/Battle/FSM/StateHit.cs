@@ -15,41 +15,7 @@ public class StateHit : IState
     public void Enter(EntityBase entityBase, params object[] args)
     {
         entityBase.currentAniState = AniState.Hit;
-        entityBase.SetDir(Vector2.zero);
-        entityBase.SetSkillMoveState(false);
-
-
-        // 受伤中断操作
-        for (int i = 0; i < entityBase.skActionCBLst.Count; i++)
-        {
-            int tid = entityBase.skActionCBLst[i];
-            TimerSvc.Instance.DelTask(tid);
-        }
-        for (int i = 0; i < entityBase.skMoveCBLst.Count; i++)
-        {
-            int tid = entityBase.skMoveCBLst[i];
-            TimerSvc.Instance.DelTask(tid);
-        }
-
-        // 攻击被中断，删除定时回调
-        if (entityBase.skCBID != -1)
-        {
-            TimerSvc.Instance.DelTask(entityBase.skCBID);
-            entityBase.skCBID = -1;
-        }
-
-        entityBase.skActionCBLst.Clear();
-        entityBase.skMoveCBLst.Clear();
-
-        // 中断后清空连招数据
-        if (entityBase.nextSkillID != 0 || entityBase.comboQue.Count>0)
-        {
-            entityBase.nextSkillID = 0;
-            entityBase.comboQue.Clear();
-
-            entityBase.battleMgr.lastAtkTime = 0;
-            entityBase.battleMgr.comboIndex = 0;
-        }
+        entityBase.RmvSkillCB();
     }
 
     public void Process(EntityBase entityBase, params object[] args)

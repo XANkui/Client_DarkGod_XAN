@@ -55,6 +55,8 @@ public class PlayerCtrlWnd : WindowRoot
 
     private void Update()
     {
+        #region skill CD
+
         float delta = Time.deltaTime;
         if (isSk1CD == true)
         {
@@ -130,6 +132,17 @@ public class PlayerCtrlWnd : WindowRoot
                 SetText(txtSk3CD, sk3Num);
             }
         }
+#endregion
+
+        #region Boss Hp
+
+        if (transBossHPBar.gameObject.activeSelf == true)
+        {
+            BlendBossHp();
+            ImgYellow.fillAmount = currentPrg;
+        }
+
+        #endregion
     }
 
     protected override void InitWnd()
@@ -147,6 +160,9 @@ public class PlayerCtrlWnd : WindowRoot
         sk1CDTime = resSvc.GetSkillCfg(101).cdTime /1000.0f;
         sk2CDTime = resSvc.GetSkillCfg(102).cdTime /1000.0f;
         sk3CDTime = resSvc.GetSkillCfg(103).cdTime /1000.0f;
+
+        // 隐藏 Boss 血条
+        SetBossHpBarState(false);
 
         RefreshUI();
         RegisterTouchEvt();
@@ -351,6 +367,49 @@ public class PlayerCtrlWnd : WindowRoot
     {
         return BattleSys.Instance.battleMgr.CanRlsSkill();
     }
+
+
+    #region boss 血条
+    [Header("boss 血条")]
+    public Transform transBossHPBar;
+    public Image ImgRed;
+    public Image ImgYellow;
+
+   
+
+    public void SetBossHpBarState(bool state, float prg = 1) {
+        
+        SetActive(transBossHPBar,state);
+        ImgRed.fillAmount = prg;
+        ImgYellow.fillAmount = prg;
+    }
+
+
+    private float currentPrg = 1;
+    private float targetPrg = 1;
+    public void SetBossHpBarVal(int oldVal,int newVal, int sumVal) {
+        currentPrg = oldVal * 1.0f / sumVal;
+        targetPrg = newVal * 1.0f / sumVal;
+        ImgRed.fillAmount = targetPrg;
+    }
+
+    private void BlendBossHp() {
+        if (Mathf.Abs(currentPrg - targetPrg) < Constants.AccelerHpSpeed * Time.deltaTime)
+        {
+            currentPrg = targetPrg;
+        }
+        else if (currentPrg > targetPrg)
+        {
+            currentPrg -= Constants.AccelerHpSpeed * Time.deltaTime;
+        }
+        else
+        {
+            currentPrg += Constants.AccelerHpSpeed * Time.deltaTime;
+        }
+    }
+
+    #endregion
+
     #region 测试方法
 
     private void ResetSkillCfg() {
