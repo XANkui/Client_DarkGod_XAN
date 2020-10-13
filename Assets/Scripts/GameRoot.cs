@@ -174,4 +174,16 @@ public class GameRoot : MonoBehaviour
 
 
     }
+
+    public void SetPlayerDataByFBEnd(RspFBFightEnd data)
+    {
+
+        PlayerData.coin = data.coin;
+        PlayerData.exp = data.exp;
+        PlayerData.crystal = data.crystal;
+        PlayerData.lv = data.lv;
+        PlayerData.fuben = data.fuben;
+
+
+    }
 }

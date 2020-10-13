@@ -20,12 +20,24 @@ public class StateDie : IState
 
     public void Process(EntityBase entityBase, params object[] args)
     {
-        // 播放出生动画
+        // 播放死亡动画
         entityBase.SetAction(Constants.ActionDie);
+
+        Debug.Log(GetType()+ "/StateDie()/.....");
+
         // 延时切换为 -1
-        TimerSvc.Instance.AddTimeTask((tid) => {
-            entityBase.SetActive(false);;
-        }, Constants.DieAniLength);
+        if (entityBase.entityType == EntityType.Monster)
+        {
+            entityBase.GetCC().enabled = false;
+
+            TimerSvc.Instance.AddTimeTask((tid) =>
+            {
+
+                entityBase.SetActive(false); ;
+
+
+            }, Constants.DieAniLength);
+        }
     }
 
     public void Exit(EntityBase entityBase, params object[] args)

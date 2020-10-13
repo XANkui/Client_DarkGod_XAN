@@ -459,6 +459,16 @@ public class ResSvc : MonoBehaviour
                             }
                             break;
 
+                        case "coin":
+                            mc.coin = int.Parse(e.InnerText);
+                            break;
+                        case "exp":
+                            mc.exp = int.Parse(e.InnerText);
+                            break;
+                        case "crystal":
+                            mc.crystal = int.Parse(e.InnerText);
+                            break;
+
                     }
                 }
 

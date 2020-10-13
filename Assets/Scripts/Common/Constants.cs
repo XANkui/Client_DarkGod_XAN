@@ -99,6 +99,9 @@ public class Constants
     public const string UIOpenPage = "uiOpenPage";
     public const string FBItemEnter = "fbitem";
 
+    public const string FBLose = "fblose";
+    public const string FBWin = "fbWin";
+
     // UI点击音效
     public const string UIClickBtn = "uiClickBtn";
 

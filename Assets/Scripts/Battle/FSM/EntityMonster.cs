@@ -56,7 +56,11 @@ public class EntityMonster : EntityBase
 
         if (currentAniState == AniState.Idle || currentAniState == AniState.Move)
         {
-
+            if (battleMgr.isGamePause == true)
+            {
+                Idle();
+                return;
+            }
 
             float delta = Time.deltaTime;
             checkCountTime += delta;

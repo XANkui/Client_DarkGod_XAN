@@ -7,6 +7,7 @@
 *****************************************************/
 
 using Protocal;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,10 +24,11 @@ public class BattleMgr : MonoBehaviour
     private MapCfg mapCfg = null;
 
     public bool triggerCheck = true;
+    public bool isGamePause = false;
 
     private Dictionary<string, EntityMonster> monstersDic = new Dictionary<string, EntityMonster>();
 
-    public void Init(int mapid) {
+    public void Init(int mapid, Action cb = null) {
         resSvc = ResSvc.Instance;
         audioSvc = AudioSvc.Instance;
 
@@ -56,6 +58,11 @@ public class BattleMgr : MonoBehaviour
             // 激活当前批次的怪物
             ActiveCurrentBatchMonsters();
 
+            if (cb !=  null)
+            {
+                cb();
+            }
+
             audioSvc.PlayBGAudio(Constants.BGHuangYe);
         });
 
@@ -80,9 +87,20 @@ public class BattleMgr : MonoBehaviour
                 if (isExit == false)
                 {
                     // 关卡结束，结算界面
+                    EndBattle(true,entityPlayer.HP);
                 }
             }
         }
+    }
+
+    public void EndBattle(bool isWin, int restHp) {
+
+        isGamePause = true;
+
+        audioSvc.StopBGAudio();
+        BattleSys.Instance.EndBattle(isWin,restHp);
+
+        
     }
 
     private void LoadPlayer(MapCfg mapCfg)

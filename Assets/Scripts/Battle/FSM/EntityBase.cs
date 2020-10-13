@@ -94,6 +94,11 @@ public abstract class EntityBase
         return controller.gameObject.GetComponent<AudioSource>();
     }
 
+    public CharacterController GetCC()
+    {
+        return controller.gameObject.GetComponent<CharacterController>();
+    }
+
     public virtual bool GetBreakState() {
         return true;
     }

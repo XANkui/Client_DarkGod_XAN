@@ -38,6 +38,13 @@ public class AudioSvc : MonoBehaviour
         }
     }
 
+    public void StopBGAudio() {
+        if (bgAudio !=null)
+        {
+            bgAudio.Stop();
+        }
+    }
+
     /// <summary>
     /// 播放UI音效
     /// </summary>

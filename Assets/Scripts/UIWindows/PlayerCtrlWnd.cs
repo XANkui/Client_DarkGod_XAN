@@ -50,7 +50,8 @@ public class PlayerCtrlWnd : WindowRoot
         btnSkill1.onClick.AddListener(ClickSkill1Btn);
         btnSkill2.onClick.AddListener(ClickSkill2Btn);
         btnSkill3.onClick.AddListener(ClickSkill3Btn);
-        btnHead.onClick.AddListener(ResetSkillCfg);
+        //btnHead.onClick.AddListener(ResetSkillCfg);
+        btnHead.onClick.AddListener(ClickHeadBtn);
     }
 
     private void Update()
@@ -214,6 +215,12 @@ public class PlayerCtrlWnd : WindowRoot
     }
 
     #region Click Events
+
+    private void ClickHeadBtn() {
+        BattleSys.Instance.battleMgr.isGamePause = true;
+        BattleSys.Instance.SetBattleEndWndState(FBEndType.Pause);
+    } 
+
 
     public void ClickNormalAtkBtn()
     {
